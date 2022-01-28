@@ -38,6 +38,15 @@ public class SettingsUtility {
             settings.setTimerDecimalAccuracy((Integer) settingsMap.get("TimerDecimalAccuracy"));
             settings.setRefreshIntervalInMillis((Integer) settingsMap.get("RefreshIntervalInMillis"));
             settings.setShowKeyEventLogging((Boolean) settingsMap.get("ShowKeyEventLogging"));
+            settings.setGeneralFontSize((Integer) settingsMap.get("GeneralFontSize"));
+            settings.setTitleFontSize((Integer) settingsMap.get("TitleFontSize"));
+            settings.setSubtitleFontSize((Integer) settingsMap.get("SubTitleFontSize"));
+            settings.setMainTimerFontSize((Integer) settingsMap.get("MainTimerFontSize"));
+            settings.setSplitTimerFontSize((Integer) settingsMap.get("SplitTimerFontSize"));
+            settings.setWindowHeight((Integer) settingsMap.get("WindowHeight"));
+            settings.setWindowWidth((Integer) settingsMap.get("WindowWidth"));
+
+
             System.out.println("Settings Loaded from File "+this.fileManager.getSettingsFile().getPath());
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,6 +85,13 @@ public class SettingsUtility {
         settings.setTimerDecimalAccuracy(2);
         settings.setRefreshIntervalInMillis(100);
         settings.setShowKeyEventLogging(false);
+        settings.setGeneralFontSize(14);
+        settings.setTitleFontSize(18);
+        settings.setSubtitleFontSize(16);
+        settings.setMainTimerFontSize(35);
+        settings.setSplitTimerFontSize(25);
+        settings.setWindowHeight(600);
+        settings.setWindowWidth(250);
     }
 
     public void loadDefaultColours(){
@@ -92,7 +108,14 @@ public class SettingsUtility {
         settingsMap.put("TimerDecimalAccuracy", settings.getTimerDecimalAccuracy());
         settingsMap.put("RefreshIntervalInMillis", settings.getRefreshIntervalInMillis());
         settingsMap.put("ShowKeyEventLogging", settings.isShowKeyEventLogging());
-        
+        settingsMap.put("GeneralFontSize" , settings.getGeneralFontSize());
+        settingsMap.put("TitleFontSize" , settings.getTitleFontSize());
+        settingsMap.put("SubTitleFontSize" , settings.getSubtitleFontSize());
+        settingsMap.put("MainTimerFontSize" , settings.getMainTimerFontSize());
+        settingsMap.put("SplitTimerFontSize" , settings.getSplitTimerFontSize());
+        settingsMap.put("WindowHeight" , settings.getWindowHeight());
+        settingsMap.put("WindowWidth" , settings.getWindowWidth());
+
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writerWithDefaultPrettyPrinter().writeValue(fileManager.getSettingsFile(), settingsMap);

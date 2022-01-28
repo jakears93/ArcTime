@@ -9,9 +9,16 @@ public class Settings {
     private KeyMap keyMap;
     private Colours colours;
     private ComparisonType comparisonType;
+    private int windowHeight;
+    private int windowWidth;
     private int timerDecimalAccuracy;
     private int refreshIntervalInMillis;
     private boolean showKeyEventLogging;
+    private int generalFontSize;
+    private int titleFontSize;
+    private int subtitleFontSize;
+    private int mainTimerFontSize;
+    private int splitTimerFontSize;
 
     //----------Constructors----------//
     public Settings() {
@@ -77,5 +84,61 @@ public class Settings {
 
     public void setColours(Colours colours) {
         this.colours = colours;
+    }
+
+    public int getGeneralFontSize() {
+        return generalFontSize;
+    }
+
+    public void setGeneralFontSize(int generalFontSize) {
+        this.generalFontSize = generalFontSize;
+    }
+
+    public int getTitleFontSize() {
+        return titleFontSize;
+    }
+
+    public void setTitleFontSize(int titleFontSize) {
+        this.titleFontSize = titleFontSize;
+    }
+
+    public int getSubtitleFontSize() {
+        return subtitleFontSize;
+    }
+
+    public void setSubtitleFontSize(int subtitleFontSize) {
+        this.subtitleFontSize = subtitleFontSize;
+    }
+
+    public int getMainTimerFontSize() {
+        return mainTimerFontSize;
+    }
+
+    public void setMainTimerFontSize(int mainTimerFontSize) {
+        this.mainTimerFontSize = mainTimerFontSize;
+    }
+
+    public int getSplitTimerFontSize() {
+        return splitTimerFontSize;
+    }
+
+    public void setSplitTimerFontSize(int splitTimerFontSize) {
+        this.splitTimerFontSize = splitTimerFontSize;
+    }
+
+    public int getWindowHeight() {
+        return windowHeight;
+    }
+
+    public void setWindowHeight(int windowHeight) {
+        this.windowHeight = windowHeight;
+    }
+
+    public int getWindowWidth() {
+        return windowWidth;
+    }
+
+    public void setWindowWidth(int windowWidth) {
+        this.windowWidth = windowWidth;
     }
 }//End of Settings Class
