@@ -5,6 +5,7 @@ module com.arcenium.speedruntimer {
     requires org.controlsfx.controls;
     requires jnativehook;
     requires com.fasterxml.jackson.databind;
+    requires commons.math3;
 
 
     opens com.arcenium.speedruntimer to javafx.fxml;

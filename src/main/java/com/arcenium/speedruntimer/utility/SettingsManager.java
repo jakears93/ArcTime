@@ -6,18 +6,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class SettingsManager {
-    Settings settings;
-    KeyMapUtility keyMapUtility;
+    private static SettingsManager INSTANCE;
+    private static Settings settings;
+    private static KeyMapUtility keyMapUtility;
 
-    public SettingsManager() {
+    private SettingsManager(){
         settings = new Settings();
         keyMapUtility = new KeyMapUtility(settings.getFileManager(), settings.getKeyMap());
         init();
     }
 
+    public static SettingsManager getINSTANCE(){
+        if(INSTANCE == null){
+            INSTANCE = new SettingsManager();
+        }
+        return INSTANCE;
+    }
+
     private void init(){
         try {
-            this.keyMapUtility.initKeys();
+            keyMapUtility.initKeys();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -40,7 +48,7 @@ public class SettingsManager {
     }
 
     public void setConfigDirectoryRoot(String path){
-        this.settings.getFileManager().setConfigRoot(path);
+        settings.getFileManager().setConfigRoot(path);
     }
 
     public void setKeyBindingSaveFile(String path){

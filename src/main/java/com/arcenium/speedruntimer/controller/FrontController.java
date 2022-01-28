@@ -17,8 +17,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class FrontController{
-    //TODO maybe make manager static in launcher class to be accessible to all views?
-    private final SettingsManager settingsManager;
     private final GlobalKeyListener globalKeyListener;
     private final SplitService splitService;
 
@@ -36,8 +34,7 @@ public class FrontController{
 
 
     public FrontController(){
-        settingsManager = new SettingsManager();
-        globalKeyListener = new GlobalKeyListener(this, settingsManager);
+        globalKeyListener = new GlobalKeyListener(this);
         splitService = new SplitService();
     }
 

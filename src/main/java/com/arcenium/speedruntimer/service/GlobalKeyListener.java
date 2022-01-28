@@ -16,9 +16,9 @@ public class GlobalKeyListener implements NativeKeyListener {
 
 
 
-    public GlobalKeyListener(FrontController frontController, SettingsManager settingsManager){
+    public GlobalKeyListener(FrontController frontController){
         this.frontController = frontController;
-        this.keymap = settingsManager.getSettings().getKeyMap();
+        this.keymap = SettingsManager.getINSTANCE().getSettings().getKeyMap();
         try{
             GlobalScreen.registerNativeHook();
         } catch (NativeHookException e){
