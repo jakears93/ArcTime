@@ -9,10 +9,12 @@ public class SettingsManager {
     private static SettingsManager INSTANCE;
     private static Settings settings;
     private static KeyMapUtility keyMapUtility;
+    private static SettingsUtility settingsUtility;
 
     private SettingsManager(){
         settings = new Settings();
         keyMapUtility = new KeyMapUtility(settings.getFileManager(), settings.getKeyMap());
+        settingsUtility = new SettingsUtility(settings.getFileManager(), settings);
         init();
     }
 
@@ -50,11 +52,6 @@ public class SettingsManager {
     public void setConfigDirectoryRoot(String path){
         settings.getFileManager().setConfigRoot(path);
     }
-
-    public void setKeyBindingSaveFile(String path){
-        settings.getFileManager().setSavedKeyMappingsFile(new File(path));
-    }
-
 
     public Settings getSettings() {
         return settings;

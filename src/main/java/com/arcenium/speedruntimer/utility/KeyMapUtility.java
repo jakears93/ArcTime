@@ -4,9 +4,7 @@ import com.arcenium.speedruntimer.config.FileManager;
 import com.arcenium.speedruntimer.config.KeyMap;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jnativehook.keyboard.NativeKeyEvent;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
@@ -39,17 +37,9 @@ public class KeyMapUtility {
     }
 
     public void saveKeyMap(Map keys){
-        File keyMapFile;
-        if(fileManager.getSavedKeyMappingsFile() == null){
-            keyMapFile = new File(fileManager.getConfigRoot()+"/keymap.json");
-        }
-        else{
-            keyMapFile = fileManager.getSavedKeyMappingsFile();
-        }
-
         try {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writerWithDefaultPrettyPrinter().writeValue(keyMapFile, keys);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(fileManager.getSavedKeyMappingsFile(), keys);
             System.out.println("KeyMap Saved: "+keyMap.getKeys());
         } catch (IOException e) {
             e.printStackTrace();

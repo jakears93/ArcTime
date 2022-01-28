@@ -6,6 +6,8 @@ public class FileManager {
     private String configRoot;
     private File root;
     private File savedKeyMappingsFile;
+    private File settingsFile;
+    private File colourSettingsFile;
 
     public FileManager() {
         //TODO add microsoft and mac os default files
@@ -22,11 +24,9 @@ public class FileManager {
             root.mkdirs();
         }
 
-        this.savedKeyMappingsFile = new File(configRoot+"/keymap.json");
-    }
-
-    public String getConfigRoot() {
-        return configRoot;
+        this.savedKeyMappingsFile = new File(configRoot+"/keymap.cfg");
+        this.settingsFile = new File(configRoot+"/settings.cfg");
+        this.colourSettingsFile = new File(configRoot+"/colours.cfg");
     }
 
     public void setConfigRoot(String configRoot) {
@@ -37,8 +37,12 @@ public class FileManager {
         return savedKeyMappingsFile;
     }
 
-    public void setSavedKeyMappingsFile(File savedKeyMappingsFile) {
-        this.savedKeyMappingsFile = savedKeyMappingsFile;
+    public File getSettingsFile() {
+        return settingsFile;
+    }
+
+    public File getColourSettingsFile() {
+        return colourSettingsFile;
     }
 
     private boolean isWindows(String OS) {

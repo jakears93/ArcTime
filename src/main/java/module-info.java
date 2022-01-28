@@ -6,6 +6,7 @@ module com.arcenium.speedruntimer {
     requires jnativehook;
     requires com.fasterxml.jackson.databind;
     requires commons.math3;
+    requires java.logging;
 
 
     opens com.arcenium.speedruntimer to javafx.fxml;

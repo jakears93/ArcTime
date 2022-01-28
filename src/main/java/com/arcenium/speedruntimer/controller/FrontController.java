@@ -8,9 +8,11 @@ import com.arcenium.speedruntimer.utility.SettingsManager;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -19,6 +21,8 @@ import javafx.util.Duration;
 public class FrontController{
     private final GlobalKeyListener globalKeyListener;
     private final SplitService splitService;
+
+    private boolean isPaused;
 
     @FXML
     private GridPane Split_Grid_0;
@@ -66,6 +70,8 @@ public class FrontController{
     }
 
 
+    /******************** Event Handlers ********************/
+
     public void startStopHandler(){
         if(timer.isActive() && splitService.getCurrentSplitIndex() >= splitService.getNumberOfSplits()-1){
             updater.stop();
@@ -89,4 +95,15 @@ public class FrontController{
         }
     }
 
+    public void resetHandler(){}
+
+    public void previousSegmentHandler(){}
+
+    public void skipSegmentHandler(){}
+
+    public void togglePauseHandler(){}
+
+    public boolean isPaused() {
+        return isPaused;
+    }
 }

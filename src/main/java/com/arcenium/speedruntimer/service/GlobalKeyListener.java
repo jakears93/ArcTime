@@ -7,14 +7,14 @@ import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import java.util.logging.Logger;
+import java.util.logging.LogManager;
+import java.util.logging.Level;
 
 public class GlobalKeyListener implements NativeKeyListener {
 
     private final FrontController frontController;
     private final KeyMap keymap;
-    private boolean isGlobalHotkeysActive = false;
-
-
 
     public GlobalKeyListener(FrontController frontController){
         this.frontController = frontController;
@@ -25,35 +25,58 @@ public class GlobalKeyListener implements NativeKeyListener {
             e.printStackTrace();
         }
         enable();
+
+        if(!SettingsManager.getINSTANCE().getSettings().isShowKeyEventLogging()){
+            disableNativeEventLogging();
+        }
     }
+
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+        if(SettingsManager.getINSTANCE().getSettings().isModifyingSettings() || frontController.isPaused())   return;
+
+        if(nativeKeyEvent.getKeyCode() == keymap.getStartKey()){
+            Platform.runLater(frontController::startStopHandler);
+        }
+        else if(nativeKeyEvent.getKeyCode() == keymap.getPauseKey()){
+            Platform.runLater(frontController::togglePauseHandler);
+        }
+        else if(nativeKeyEvent.getKeyCode() == keymap.getResetKey()){
+            Platform.runLater(frontController::resetHandler);
+        }
+        else if(nativeKeyEvent.getKeyCode() == keymap.getPreviousKey()){
+            Platform.runLater(frontController::previousSegmentHandler);
+        }
+        else if(nativeKeyEvent.getKeyCode() == keymap.getSkipKey()){
+            Platform.runLater(frontController::skipSegmentHandler);
+        }
+
+        //TODO find way to reenable when not listening, disabled for now
+//        else if(nativeKeyEvent.getKeyCode() == keymap.getToggleGlobalHotkeysKey()){
+//            if(isGlobalHotkeysActive)   disable();
+//            else    enable();
+//        }
+    }
+
+    public void enable(){
+        GlobalScreen.addNativeKeyListener(this);
+    }
+
+    public void disable(){
+        GlobalScreen.removeNativeKeyListener(this);
+    }
+
+    private void disableNativeEventLogging() {
+        LogManager.getLogManager().reset();
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+    }
+
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
     }
 
     @Override
-    public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        if(nativeKeyEvent.getKeyCode() == keymap.getStartKey()){
-            Platform.runLater(frontController::startStopHandler);
-        }
-        else if(nativeKeyEvent.getKeyCode() == keymap.getToggleGlobalHotkeysKey()){
-            if(isGlobalHotkeysActive)   disable();
-            else    enable();
-            //TODO figure out why all key presses no longer registered after disabling
-        }
-    }
-
-    @Override
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
     }
-
-    public void enable(){
-        GlobalScreen.addNativeKeyListener(this);
-        this.isGlobalHotkeysActive = true;
-    }
-
-    public void disable(){
-        GlobalScreen.removeNativeKeyListener(this);
-        this.isGlobalHotkeysActive = false;
-    }
-
 }//End of GlobalKeyListener Class
