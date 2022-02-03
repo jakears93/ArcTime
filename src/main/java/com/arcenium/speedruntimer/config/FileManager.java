@@ -8,6 +8,7 @@ public class FileManager {
     private File savedKeyMappingsFile;
     private File settingsFile;
     private File colourSettingsFile;
+    private String splitsDirectoryPath;
 
     public FileManager() {
         //TODO add microsoft and mac os default files
@@ -24,9 +25,16 @@ public class FileManager {
             root.mkdirs();
         }
 
+        this.splitsDirectoryPath = configRoot+"/splits";
+        File gameSplitDir = new File(this.splitsDirectoryPath);
+        if(!gameSplitDir.exists()){
+            gameSplitDir.mkdirs();
+        }
+
         this.savedKeyMappingsFile = new File(configRoot+"/keymap.cfg");
         this.settingsFile = new File(configRoot+"/settings.cfg");
         this.colourSettingsFile = new File(configRoot+"/colours.cfg");
+
     }
 
     public void setConfigRoot(String configRoot) {
@@ -43,6 +51,10 @@ public class FileManager {
 
     public File getColourSettingsFile() {
         return colourSettingsFile;
+    }
+
+    public String getSplitsDirectoryPath(){
+        return splitsDirectoryPath;
     }
 
     private boolean isWindows(String OS) {

@@ -1,6 +1,7 @@
 package com.arcenium.speedruntimer.utility;
 
 import com.arcenium.speedruntimer.config.Settings;
+import com.arcenium.speedruntimer.model.GameSplits;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,11 +11,13 @@ public class SettingsManager {
     private static Settings settings;
     private static KeyMapUtility keyMapUtility;
     private static SettingsUtility settingsUtility;
+    private static GameSplitUtility gameSplitUtility;
 
     private SettingsManager(){
         settings = new Settings();
         keyMapUtility = new KeyMapUtility(settings.getFileManager(), settings.getKeyMap());
         settingsUtility = new SettingsUtility(settings.getFileManager(), settings);
+        gameSplitUtility = new GameSplitUtility(settings.getFileManager());
         init();
     }
 
@@ -28,6 +31,8 @@ public class SettingsManager {
     private void init(){
         try {
             keyMapUtility.initKeys();
+            settingsUtility.loadSettings();
+            settingsUtility.loadColours();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -55,5 +60,18 @@ public class SettingsManager {
 
     public Settings getSettings() {
         return settings;
+    }
+
+    public void saveGameSplits(GameSplits gameSplits){
+        gameSplitUtility.saveGameSplits(gameSplits);
+    }
+
+    public GameSplits loadGameSplits(String gameTitle, String category) {
+        try {
+            return gameSplitUtility.loadGameSplits(gameTitle, category);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

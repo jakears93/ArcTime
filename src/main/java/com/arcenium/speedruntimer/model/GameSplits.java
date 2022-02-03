@@ -11,6 +11,10 @@ public class GameSplits {
     private double sumOfBest;
     private List<Split> splits;
 
+
+    public GameSplits() {
+    }
+
     public GameSplits(String gameTitle, String category, int attempts, double pb, double sumOfBest) {
         this.gameTitle = gameTitle;
         this.category = category;

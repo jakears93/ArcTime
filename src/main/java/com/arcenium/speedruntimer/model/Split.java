@@ -1,17 +1,27 @@
 package com.arcenium.speedruntimer.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Split {
     //----------Fields / Attributes----------//
-    private long id;
     private String name;
+    @JsonIgnore
     private double startTime;
+    @JsonIgnore
     private double endTime;
+    @JsonIgnore
     private double length;
     private double pbTime;
     private double bestTime;
 
     //----------Constructors----------//
-    public Split(String name, double pbTime, double bestTime) {
+    @JsonCreator
+    public Split(
+            @JsonProperty("name") String name,
+            @JsonProperty("pbTime") double pbTime,
+            @JsonProperty("bestTime") double bestTime) {
         this.name = name;
         this.startTime = 0;
         this.endTime = 0;
@@ -20,19 +30,7 @@ public class Split {
         this.bestTime = bestTime;
     }
 
-    public void updateLength() {
-        this.length = this.endTime - this.startTime;
-    }
-
     //----------Default Methods----------//
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -58,6 +56,7 @@ public class Split {
     }
 
     public double getLength() {
+        this.length = this.endTime - this.startTime;
         return length;
     }
 

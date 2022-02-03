@@ -50,7 +50,7 @@ public class RunService {
         //Update last split
         Split lastSplit = this.gameSplits.getSplits().get(runSplitIndex-1);
         lastSplit.setEndTime(splitTime);
-        lastSplit.updateLength();
+        //TODO lastSplit.updateLength();
     }
 
     public void skipSplit(){

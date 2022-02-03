@@ -19,8 +19,6 @@ public class SettingsUtility {
     public SettingsUtility(FileManager fileManager, Settings settings) {
         this.fileManager = fileManager;
         this.settings = settings;
-        loadSettings();
-        loadColours();
     }
 
     public void loadSettings(){
