@@ -2,15 +2,16 @@ package com.arcenium.speedruntimer.model.components;
 
 import com.arcenium.speedruntimer.model.GameSplits;
 import com.arcenium.speedruntimer.model.Split;
-import com.arcenium.speedruntimer.utility.SettingsManager;
-import org.apache.commons.math3.util.Precision;
+import com.arcenium.speedruntimer.utility.Converter;
 
 public class BestPossibleTimeComponent implements Component{
     private final String name;
     private double valueInSeconds;
+    private final Converter converter;
 
     public BestPossibleTimeComponent() {
         this.name = "Best Possible Time";
+        this.converter = Converter.getINSTANCE();
     }
 
     @Override
@@ -30,27 +31,7 @@ public class BestPossibleTimeComponent implements Component{
 
     @Override
     public String getValue() {
-        StringBuilder sb = new StringBuilder();
-        int hours = (int) (valueInSeconds/3600);
-        int minutes = (int)((valueInSeconds%3600)/60);
-        double seconds = valueInSeconds%60;
-        seconds = Precision.round(seconds, SettingsManager.getINSTANCE().getSettings().getTimerDecimalAccuracy());
-        if(hours>0){
-            sb.append(hours);
-            sb.append(":");
-            sb.append(minutes);
-            sb.append(":");
-            sb.append(seconds);
-        }
-        else if(minutes>0){
-            sb.append(minutes);
-            sb.append(":");
-            sb.append(seconds);
-        }
-        else{
-            sb.append(seconds);
-        }
-        return sb.toString();
+        return converter.secondsToTimeString(valueInSeconds);
     }
 
     @Override

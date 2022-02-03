@@ -3,6 +3,7 @@ package com.arcenium.speedruntimer.model.components;
 import com.arcenium.speedruntimer.model.ComparisonType;
 import com.arcenium.speedruntimer.model.GameSplits;
 import com.arcenium.speedruntimer.model.Split;
+import com.arcenium.speedruntimer.utility.Converter;
 import com.arcenium.speedruntimer.utility.SettingsManager;
 import org.apache.commons.math3.util.Precision;
 
@@ -12,12 +13,14 @@ public class PreviousSegmentComponent implements Component{
     private boolean isFirstSplit;
     private ComparisonType type;
     private double timeDifference;
+    private final Converter converter;
 
     public PreviousSegmentComponent() {
         this.type = SettingsManager.getINSTANCE().getSettings().getComparisonType();
         this.name = "Previous Segment("+type+")";
         this.isFirstSplit = true;
         this.timeDifference = 0.00;
+        this.converter = Converter.getINSTANCE();
     }
 
     @Override
@@ -49,7 +52,7 @@ public class PreviousSegmentComponent implements Component{
             if(timeDifference > 0.00){
                 sb.append("+");
             }
-            sb.append(timeDifference);
+            sb.append(converter.secondsToTimeString(timeDifference));
             return sb.toString();
         }
     }

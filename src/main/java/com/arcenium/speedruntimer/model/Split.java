@@ -20,6 +20,10 @@ public class Split {
         this.bestTime = bestTime;
     }
 
+    public void updateLength() {
+        this.length = this.endTime - this.startTime;
+    }
+
     //----------Default Methods----------//
     public long getId() {
         return id;
@@ -54,7 +58,6 @@ public class Split {
     }
 
     public double getLength() {
-        this.length = this.endTime - this.startTime;
         return length;
     }
 

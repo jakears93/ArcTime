@@ -1,8 +1,10 @@
 package com.arcenium.speedruntimer.controller;
 
+import com.arcenium.speedruntimer.model.GameSplits;
 import com.arcenium.speedruntimer.model.SpeedTimer;
 import com.arcenium.speedruntimer.model.Split;
 import com.arcenium.speedruntimer.service.GlobalKeyListener;
+import com.arcenium.speedruntimer.service.RunService;
 import com.arcenium.speedruntimer.service.SplitService;
 import com.arcenium.speedruntimer.utility.SettingsManager;
 import javafx.animation.Animation;
@@ -15,14 +17,14 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class FrontController{
     private final GlobalKeyListener globalKeyListener;
     private final SplitService splitService;
-
-    private boolean isPaused;
+    private final RunService runService;
 
     @FXML
     private GridPane Split_Grid_0;
@@ -31,31 +33,38 @@ public class FrontController{
     @FXML
     private Label Main_Timer;
 
-    private SpeedTimer timer = new SpeedTimer();
     private Timeline updater;
-
-    private int index = -1;
-
 
     public FrontController(){
         globalKeyListener = new GlobalKeyListener(this);
         splitService = new SplitService();
+        runService = new RunService();
     }
 
     @FXML
     public void initialize(){
+        loadGameSplits();
         initLabels();
     }
 
+    public void loadGameSplits(){
+        //TODO temp solution
+        GameSplits gameSplits = new GameSplits("Super Mario 64", "16 Star", 69, 123, 123);
+        gameSplits.setSplits(splitService.getSplits());
+        runService.setGameSplits(gameSplits);
+    }
+
     public void initLabels(){
-        Run_Title_Label.setText("Super Mario 64");
+        Run_Title_Label.setText(runService.getGameSplits().getGameTitle());
+        Run_Title_Label.setFont(Font.font(SettingsManager.getINSTANCE().getSettings().getFontStyle(), FontWeight.BOLD, SettingsManager.getINSTANCE().getSettings().getTitleFontSize()));
+
         int rowId = 0;
-        for(Split split : splitService.getSplits()){
+        for(Split split : runService.getGameSplits().getSplits()){
             Label pic = new Label();
             Label name = new Label(split.getName());
             Label timeSave = new Label();
             Label pb = new Label(String.valueOf(split.getPbTime()));
-            name.setFont(new Font(14));
+            name.setFont(new Font(SettingsManager.getINSTANCE().getSettings().getFontStyle(), SettingsManager.getINSTANCE().getSettings().getGeneralFontSize()));
             timeSave.setFont(new Font(14));
             pb.setFont(new Font(14));
             //TODO why does setting this to a ridiculous number work?
@@ -67,31 +76,30 @@ public class FrontController{
             Split_Grid_0.addRow(rowId, pic, name, timeSave, pb);
             rowId++;
         }
+        Main_Timer.setFont(new Font(SettingsManager.getINSTANCE().getSettings().getFontStyle(), SettingsManager.getINSTANCE().getSettings().getMainTimerFontSize()));
     }
 
 
     /******************** Event Handlers ********************/
 
     public void startStopHandler(){
-        if(timer.isActive() && splitService.getCurrentSplitIndex() >= splitService.getNumberOfSplits()-1){
+        if(runService.isActive() && runService.getRunSplitIndex() >= runService.getNumOfSplits()-1){
             updater.stop();
-            timer.stopTimer();
+            runService.stopRun();
         }
-        else if(!timer.isActive()){
-            timer.startTimer();
-            updater = new Timeline(new KeyFrame(Duration.millis(10), e->
+        else if(!runService.isActive()){
+            runService.startRun();
+            updater = new Timeline(new KeyFrame(Duration.millis(100), e->
             {
-                Main_Timer.setText(timer.getInfo());
-                splitService.getSplits().get(splitService.getCurrentSplitIndex()).setStartTime(timer.getTimeElapsedMillis());
-                Label updateSplitTime = (Label) Split_Grid_0.getChildren().get(splitService.getCurrentSplitIndex()*4+3);
-                updateSplitTime.setText(timer.getInfo());
+                Main_Timer.setText(runService.getTimer().getInfo());
+                Label updateSplitTime = (Label) Split_Grid_0.getChildren().get(runService.getRunSplitIndex()*4+3);
+                updateSplitTime.setText(runService.getTimer().getInfo());
             }));
             updater.setCycleCount(Animation.INDEFINITE);
             updater.play();
         }
         else{
-            splitService.getSplits().get(splitService.getCurrentSplitIndex()+1).setStartTime(timer.getTimeElapsedMillis());
-            splitService.setCurrentSplitIndex(splitService.getCurrentSplitIndex()+1);
+            runService.nextSplit();
         }
     }
 
@@ -102,8 +110,4 @@ public class FrontController{
     public void skipSegmentHandler(){}
 
     public void togglePauseHandler(){}
-
-    public boolean isPaused() {
-        return isPaused;
-    }
 }

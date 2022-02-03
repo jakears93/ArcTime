@@ -18,7 +18,7 @@ public class ArcTime extends Application {
         SettingsManager.getINSTANCE();
 
         FXMLLoader fxmlLoader = new FXMLLoader(ArcTime.class.getResource("main-window.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 400, 240);
         stage.setTitle("Arc Time");
         stage.setScene(scene);
         stage.show();

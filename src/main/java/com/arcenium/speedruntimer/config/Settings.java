@@ -1,6 +1,7 @@
 package com.arcenium.speedruntimer.config;
 
 import com.arcenium.speedruntimer.model.ComparisonType;
+import javafx.scene.text.Font;
 
 public class Settings {
     //----------Fields / Attributes----------//
@@ -19,6 +20,7 @@ public class Settings {
     private int subtitleFontSize;
     private int mainTimerFontSize;
     private int splitTimerFontSize;
+    private String fontStyle;
 
     //----------Constructors----------//
     public Settings() {
@@ -124,6 +126,14 @@ public class Settings {
 
     public void setSplitTimerFontSize(int splitTimerFontSize) {
         this.splitTimerFontSize = splitTimerFontSize;
+    }
+
+    public String getFontStyle() {
+        return fontStyle;
+    }
+
+    public void setFontStyle(String fontStyle) {
+        this.fontStyle = fontStyle;
     }
 
     public int getWindowHeight() {

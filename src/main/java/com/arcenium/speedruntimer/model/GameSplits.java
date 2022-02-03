@@ -5,21 +5,23 @@ import java.util.List;
 
 public class GameSplits {
     private String gameTitle;
-    private String gameSubtitle;
     private String category;
     private int attempts;
     private double pb;
     private double sumOfBest;
     private List<Split> splits;
 
-    public GameSplits(String gameTitle, String gameSubtitle, String category, int attempts, double pb, double sumOfBest) {
+    public GameSplits(String gameTitle, String category, int attempts, double pb, double sumOfBest) {
         this.gameTitle = gameTitle;
-        this.gameSubtitle = gameSubtitle;
         this.category = category;
         this.attempts = attempts;
         this.pb = pb;
         this.sumOfBest = sumOfBest;
         this.splits = new ArrayList<>();
+    }
+
+    public void incrementAttempts(){
+        this.attempts++;
     }
 
     public String getGameTitle() {
@@ -28,14 +30,6 @@ public class GameSplits {
 
     public void setGameTitle(String gameTitle) {
         this.gameTitle = gameTitle;
-    }
-
-    public String getGameSubtitle() {
-        return gameSubtitle;
-    }
-
-    public void setGameSubtitle(String gameSubtitle) {
-        this.gameSubtitle = gameSubtitle;
     }
 
     public String getCategory() {

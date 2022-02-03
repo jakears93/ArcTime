@@ -1,5 +1,7 @@
 package com.arcenium.speedruntimer.model;
 
+import com.arcenium.speedruntimer.utility.Converter;
+
 import java.util.Calendar;
 
 public class SpeedTimer implements Runnable {
@@ -7,11 +9,14 @@ public class SpeedTimer implements Runnable {
     private Thread thread = null;
     private String info;
     private boolean isActive = false;
+    private boolean exit = false;
     private double startMillis = 0;
     private double timeElapsedMillis = 0;
+    private final Converter converter;
 
     //----------Constructors----------//
     public SpeedTimer(){
+        this.converter = Converter.getINSTANCE();
         thread = new Thread(this);
         thread.start();
     }
@@ -20,10 +25,10 @@ public class SpeedTimer implements Runnable {
     @Override
     public void run() {
         try{
-            while(true){
+            while(!exit){
                 while(isActive){
                     timeElapsedMillis= Calendar.getInstance().getTimeInMillis() - startMillis;
-                    info = String.valueOf(timeElapsedMillis/1000);
+                    info = converter.secondsToTimeString(timeElapsedMillis / 1000);
                     thread.sleep(10);
                 }
                 thread.sleep(10);
@@ -38,8 +43,13 @@ public class SpeedTimer implements Runnable {
         isActive = true;
     }
 
+    public void togglePauseTimer(){
+        this.isActive = !this.isActive;
+    }
+
     public void stopTimer() {
         isActive = false;
+        exit = false;
     }
 
     //----------Default Methods----------//

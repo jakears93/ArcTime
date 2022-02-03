@@ -6,6 +6,7 @@ import com.arcenium.speedruntimer.model.ComparisonType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class SettingsUtility {
             settings.setSubtitleFontSize((Integer) settingsMap.get("SubTitleFontSize"));
             settings.setMainTimerFontSize((Integer) settingsMap.get("MainTimerFontSize"));
             settings.setSplitTimerFontSize((Integer) settingsMap.get("SplitTimerFontSize"));
+            settings.setFontStyle((String) settingsMap.get("FontStyle"));
             settings.setWindowHeight((Integer) settingsMap.get("WindowHeight"));
             settings.setWindowWidth((Integer) settingsMap.get("WindowWidth"));
 
@@ -90,6 +92,7 @@ public class SettingsUtility {
         settings.setSubtitleFontSize(16);
         settings.setMainTimerFontSize(35);
         settings.setSplitTimerFontSize(25);
+        settings.setFontStyle("Courier");
         settings.setWindowHeight(600);
         settings.setWindowWidth(250);
     }
@@ -113,6 +116,7 @@ public class SettingsUtility {
         settingsMap.put("SubTitleFontSize" , settings.getSubtitleFontSize());
         settingsMap.put("MainTimerFontSize" , settings.getMainTimerFontSize());
         settingsMap.put("SplitTimerFontSize" , settings.getSplitTimerFontSize());
+        settingsMap.put("FontStyle", settings.getFontStyle());
         settingsMap.put("WindowHeight" , settings.getWindowHeight());
         settingsMap.put("WindowWidth" , settings.getWindowWidth());
 
