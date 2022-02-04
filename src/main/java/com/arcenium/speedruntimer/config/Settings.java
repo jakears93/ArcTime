@@ -1,14 +1,13 @@
 package com.arcenium.speedruntimer.config;
 
 import com.arcenium.speedruntimer.model.ComparisonType;
-import javafx.scene.text.Font;
 
 public class Settings {
-    //----------Fields / Attributes----------//
+    /******************** Setting Fields ********************/
     private boolean isModifyingSettings;
-    private FileManager fileManager;
-    private KeyMap keyMap;
-    private Colours colours;
+    private final FileManager fileManager;
+    private final KeyMap keyMap;
+    private final Colours colours;
     private ComparisonType comparisonType;
     private int windowHeight;
     private int windowWidth;
@@ -22,16 +21,22 @@ public class Settings {
     private int splitTimerFontSize;
     private String fontStyle;
 
-    //----------Constructors----------//
+    /******************** Constructor ********************/
     public Settings() {
         this.fileManager = new FileManager();
         this.keyMap = new KeyMap();
         this.colours = new Colours();
     }
 
-    //----------Class Specific Methods----------//
+    /******************** Getters and Setters ********************/
+    public boolean isModifyingSettings() {
+        return isModifyingSettings;
+    }
 
-    //----------Default Methods----------//
+    public void setModifyingSettings(boolean modifyingSettings) {
+        isModifyingSettings = modifyingSettings;
+    }
+
     public FileManager getFileManager() {
         return fileManager;
     }
@@ -40,12 +45,8 @@ public class Settings {
         return keyMap;
     }
 
-    public int getTimerDecimalAccuracy() {
-        return timerDecimalAccuracy;
-    }
-
-    public void setTimerDecimalAccuracy(int timerDecimalAccuracy) {
-        this.timerDecimalAccuracy = timerDecimalAccuracy;
+    public Colours getColours() {
+        return colours;
     }
 
     public ComparisonType getComparisonType() {
@@ -56,20 +57,28 @@ public class Settings {
         this.comparisonType = comparisonType;
     }
 
-    public boolean isModifyingSettings() {
-        return isModifyingSettings;
+    public int getWindowHeight() {
+        return windowHeight;
     }
 
-    public void setModifyingSettings(boolean modifyingSettings) {
-        isModifyingSettings = modifyingSettings;
+    public void setWindowHeight(int windowHeight) {
+        this.windowHeight = windowHeight;
     }
 
-    public boolean isShowKeyEventLogging() {
-        return showKeyEventLogging;
+    public int getWindowWidth() {
+        return windowWidth;
     }
 
-    public void setShowKeyEventLogging(boolean showKeyEventLogging) {
-        this.showKeyEventLogging = showKeyEventLogging;
+    public void setWindowWidth(int windowWidth) {
+        this.windowWidth = windowWidth;
+    }
+
+    public int getTimerDecimalAccuracy() {
+        return timerDecimalAccuracy;
+    }
+
+    public void setTimerDecimalAccuracy(int timerDecimalAccuracy) {
+        this.timerDecimalAccuracy = timerDecimalAccuracy;
     }
 
     public int getRefreshIntervalInMillis() {
@@ -80,12 +89,12 @@ public class Settings {
         this.refreshIntervalInMillis = refreshIntervalInMillis;
     }
 
-    public Colours getColours() {
-        return colours;
+    public boolean isShowKeyEventLogging() {
+        return showKeyEventLogging;
     }
 
-    public void setColours(Colours colours) {
-        this.colours = colours;
+    public void setShowKeyEventLogging(boolean showKeyEventLogging) {
+        this.showKeyEventLogging = showKeyEventLogging;
     }
 
     public int getGeneralFontSize() {
@@ -134,21 +143,5 @@ public class Settings {
 
     public void setFontStyle(String fontStyle) {
         this.fontStyle = fontStyle;
-    }
-
-    public int getWindowHeight() {
-        return windowHeight;
-    }
-
-    public void setWindowHeight(int windowHeight) {
-        this.windowHeight = windowHeight;
-    }
-
-    public int getWindowWidth() {
-        return windowWidth;
-    }
-
-    public void setWindowWidth(int windowWidth) {
-        this.windowWidth = windowWidth;
     }
 }//End of Settings Class

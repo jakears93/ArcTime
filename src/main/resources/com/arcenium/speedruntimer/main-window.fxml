@@ -71,7 +71,7 @@
          </padding>
       </GridPane>
       <Separator fx:id="Title_Split_Separator" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-      <GridPane fx:id="Split_Grid_0">
+      <GridPane fx:id="Split_Grid">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="207.0" minWidth="10.0" percentWidth="10.0" prefWidth="50.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" percentWidth="60.0" prefWidth="205.0" />
@@ -102,38 +102,38 @@
             <Insets right="5.0" />
          </padding>
       </GridPane>
-      <Separator fx:id="Final_Split_Separator" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-      <GridPane fx:id="Split_Grid_Last">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="207.0" minWidth="10.0" percentWidth="10.0" prefWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" percentWidth="60.0" prefWidth="205.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" percentWidth="15.0" prefWidth="227.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" percentWidth="15.0" prefWidth="227.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <Label fx:id="Split_Name_Last" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Split Title" GridPane.columnIndex="1">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="SplitTimeSave_Last" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="-00.00" GridPane.columnIndex="2">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="SplitTime_Last" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="9:99:99" GridPane.columnIndex="3">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-         </children>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </GridPane>
+<!--      <Separator fx:id="Final_Split_Separator" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />-->
+<!--      <GridPane fx:id="Split_Grid_Last">-->
+<!--         <columnConstraints>-->
+<!--            <ColumnConstraints hgrow="SOMETIMES" maxWidth="207.0" minWidth="10.0" percentWidth="10.0" prefWidth="50.0" />-->
+<!--            <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" percentWidth="60.0" prefWidth="205.0" />-->
+<!--            <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" percentWidth="15.0" prefWidth="227.0" />-->
+<!--            <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.0" minWidth="10.0" percentWidth="15.0" prefWidth="227.0" />-->
+<!--         </columnConstraints>-->
+<!--         <rowConstraints>-->
+<!--            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />-->
+<!--         </rowConstraints>-->
+<!--         <children>-->
+<!--            <Label fx:id="Split_Name_Last" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Split Title" GridPane.columnIndex="1">-->
+<!--               <font>-->
+<!--                  <Font size="14.0" />-->
+<!--               </font>-->
+<!--            </Label>-->
+<!--            <Label fx:id="SplitTimeSave_Last" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="-00.00" GridPane.columnIndex="2">-->
+<!--               <font>-->
+<!--                  <Font size="14.0" />-->
+<!--               </font>-->
+<!--            </Label>-->
+<!--            <Label fx:id="SplitTime_Last" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="9:99:99" GridPane.columnIndex="3">-->
+<!--               <font>-->
+<!--                  <Font size="14.0" />-->
+<!--               </font>-->
+<!--            </Label>-->
+<!--         </children>-->
+<!--         <padding>-->
+<!--            <Insets right="5.0" />-->
+<!--         </padding>-->
+<!--      </GridPane>-->
       <Separator fx:id="Timer_Separator" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
       <GridPane fx:id="Main_Timer_Grid" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0">
         <columnConstraints>

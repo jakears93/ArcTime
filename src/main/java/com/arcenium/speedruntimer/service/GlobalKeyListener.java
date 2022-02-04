@@ -12,10 +12,11 @@ import java.util.logging.LogManager;
 import java.util.logging.Level;
 
 public class GlobalKeyListener implements NativeKeyListener {
-
+    /******************** Fields ********************/
     private final FrontController frontController;
     private final KeyMap keymap;
 
+    /******************** Constructor/Initializer ********************/
     public GlobalKeyListener(FrontController frontController){
         this.frontController = frontController;
         this.keymap = SettingsManager.getINSTANCE().getSettings().getKeyMap();
@@ -31,6 +32,22 @@ public class GlobalKeyListener implements NativeKeyListener {
         }
     }
 
+    /******************** Enable/Disable ********************/
+    public void enable(){
+        GlobalScreen.addNativeKeyListener(this);
+    }
+
+    public void disable(){
+        GlobalScreen.removeNativeKeyListener(this);
+    }
+
+    private void disableNativeEventLogging() {
+        LogManager.getLogManager().reset();
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+    }
+
+    /******************** Handlers ********************/
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
         if(SettingsManager.getINSTANCE().getSettings().isModifyingSettings() || frontController.isPaused())   return;
@@ -51,27 +68,12 @@ public class GlobalKeyListener implements NativeKeyListener {
             Platform.runLater(frontController::skipSegmentHandler);
         }
 
-        //TODO find way to reenable when not listening, disabled for now
+        //TODO find way to re-enable when not listening, disabled for now
 //        else if(nativeKeyEvent.getKeyCode() == keymap.getToggleGlobalHotkeysKey()){
 //            if(isGlobalHotkeysActive)   disable();
 //            else    enable();
 //        }
     }
-
-    public void enable(){
-        GlobalScreen.addNativeKeyListener(this);
-    }
-
-    public void disable(){
-        GlobalScreen.removeNativeKeyListener(this);
-    }
-
-    private void disableNativeEventLogging() {
-        LogManager.getLogManager().reset();
-        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
-        logger.setLevel(Level.OFF);
-    }
-
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
     }

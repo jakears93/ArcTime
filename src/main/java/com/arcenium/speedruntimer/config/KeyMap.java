@@ -1,15 +1,15 @@
 package com.arcenium.speedruntimer.config;
 
-
 import org.jnativehook.keyboard.NativeKeyEvent;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class KeyMap {
+    /******************** Key Maps ********************/
     private Map<String, Integer> keys;
     private final Map<String, Integer> defaultKeys;
 
+    /******************** Constructor/Initializer ********************/
     public KeyMap() {
         this.keys = new HashMap<>();
         defaultKeys = new HashMap<>();
@@ -21,6 +21,7 @@ public class KeyMap {
         defaultKeys.put("Toggle Global Hotkeys", NativeKeyEvent.VC_MINUS);
     }
 
+    /******************** Getters and Setters ********************/
     public Map<String, Integer> getKeys() {
         return keys;
     }
@@ -34,26 +35,26 @@ public class KeyMap {
     }
 
     public int getStartKey(){
-        return keys.containsKey("Start / Split") == true ? keys.get("Start / Split") : -1 ;
+        return keys.getOrDefault("Start / Split", -1);
     }
 
     public int getResetKey(){
-        return keys.containsKey("Reset") == true ? keys.get("Reset") : -1 ;
+        return keys.getOrDefault("Reset", -1);
     }
 
     public int getPauseKey(){
-        return keys.containsKey("Toggle Pause") == true ? keys.get("Toggle Pause") : -1 ;
+        return keys.getOrDefault("Toggle Pause", -1);
     }
 
     public int getSkipKey(){
-        return keys.containsKey("Skip Split") == true ? keys.get("Skip Split") : -1 ;
+        return keys.getOrDefault("Skip Split", -1);
     }
 
     public int getPreviousKey(){
-        return keys.containsKey("Previous Split") == true ? keys.get("Previous Split") : -1 ;
+        return keys.getOrDefault("Previous Split", -1);
     }
 
     public int getToggleGlobalHotkeysKey(){
-        return keys.containsKey("Toggle Global Hotkeys") == true ? keys.get("Toggle Global Hotkeys") : -1 ;
+        return keys.getOrDefault("Toggle Global Hotkeys", -1);
     }
-}
+}//End of KeyMap Class

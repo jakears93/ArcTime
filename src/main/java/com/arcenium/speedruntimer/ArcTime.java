@@ -3,12 +3,9 @@ package com.arcenium.speedruntimer;
 import com.arcenium.speedruntimer.utility.SettingsManager;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
 import java.io.IOException;
 
 public class ArcTime extends Application {
@@ -18,17 +15,14 @@ public class ArcTime extends Application {
         SettingsManager.getINSTANCE();
 
         FXMLLoader fxmlLoader = new FXMLLoader(ArcTime.class.getResource("main-window.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 240);
+        Scene scene = new Scene(fxmlLoader.load(), SettingsManager.getINSTANCE().getSettings().getWindowWidth(), SettingsManager.getINSTANCE().getSettings().getWindowHeight());
         stage.setTitle("Arc Time");
         stage.setScene(scene);
         stage.show();
 
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent t) {
-                Platform.exit();
-                System.exit(0);
-            }
+        stage.setOnCloseRequest(windowEvent -> {
+            Platform.exit();
+            System.exit(0);
         });
     }
 
@@ -40,4 +34,4 @@ public class ArcTime extends Application {
     public static void main(String[] args) {
         launch();
     }
-}
+}//End of ArcTime Class

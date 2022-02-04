@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Split {
-    //----------Fields / Attributes----------//
+    /******************** Split Information Fields ********************/
     private String name;
     @JsonIgnore
     private double startTime;
@@ -16,7 +16,7 @@ public class Split {
     private double pbTime;
     private double bestTime;
 
-    //----------Constructors----------//
+    /******************** Constructors ********************/
     @JsonCreator
     public Split(
             @JsonProperty("name") String name,
@@ -30,7 +30,19 @@ public class Split {
         this.bestTime = bestTime;
     }
 
-    //----------Default Methods----------//
+    public Split() {
+    }
+
+    /******************** Update Functions ********************/
+    public void updateLength() {
+        this.length = (this.endTime - this.startTime)/1000;
+    }
+
+    public void updateLength(double currentTime) {
+        this.length = (currentTime - this.startTime)/1000;
+    }
+
+    /******************** Default Functions ********************/
     public String getName() {
         return name;
     }
@@ -56,7 +68,6 @@ public class Split {
     }
 
     public double getLength() {
-        this.length = this.endTime - this.startTime;
         return length;
     }
 
@@ -88,5 +99,16 @@ public class Split {
                 ", endTime=" + endTime +
                 ", length=" + length +
                 '}';
+    }
+
+    public Split clone(){
+        Split clone = new Split();
+        clone.setPbTime(this.pbTime);
+        clone.setBestTime(this.bestTime);
+        clone.setName(this.name);
+        clone.setStartTime(this.startTime);
+        clone.setEndTime(this.endTime);
+        clone.setLength(this.length);
+        return clone;
     }
 }//End of Split Class

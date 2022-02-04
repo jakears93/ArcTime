@@ -6,21 +6,22 @@ import com.arcenium.speedruntimer.model.ComparisonType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SettingsUtility {
+    /******************** Required Inputs ********************/
     private final FileManager fileManager;
     private final Settings settings;
 
+    /******************** Constructor ********************/
     public SettingsUtility(FileManager fileManager, Settings settings) {
         this.fileManager = fileManager;
         this.settings = settings;
     }
 
+    /******************** Utility Functions ********************/
     public void loadSettings(){
         if(!this.fileManager.getSettingsFile().exists()){
             loadDefaultSettings();
@@ -145,4 +146,4 @@ public class SettingsUtility {
             e.printStackTrace();
         }
     }
-}
+}//End of SettingsUtility Class

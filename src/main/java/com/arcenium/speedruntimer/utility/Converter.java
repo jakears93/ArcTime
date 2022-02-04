@@ -3,12 +3,13 @@ package com.arcenium.speedruntimer.utility;
 import org.apache.commons.math3.util.Precision;
 
 public class Converter {
+    /******************** Singleton Instance ********************/
     private static Converter INSTANCE;
 
-    private Converter(){
+    /******************** Constructors ********************/
+    private Converter(){}
 
-    }
-
+    /******************** Singleton Retriever ********************/
     public static Converter getINSTANCE(){
         if(INSTANCE == null){
             INSTANCE = new Converter();
@@ -16,6 +17,7 @@ public class Converter {
         return INSTANCE;
     }
 
+    /******************** Utility Functions ********************/
     public String secondsToTimeString(double secondsInput){
         StringBuilder sb = new StringBuilder();
         int hours = (int) (secondsInput/3600);
@@ -39,4 +41,4 @@ public class Converter {
         }
         return sb.toString();
     }
-}
+}//End of Converter Class

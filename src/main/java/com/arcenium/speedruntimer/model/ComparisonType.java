@@ -1,17 +1,16 @@
 package com.arcenium.speedruntimer.model;
 
 public enum ComparisonType {
+    /******************** Enum Values ********************/
     PB("PB"),
     BEST("BEST");
 
-    private String text;
+    /******************** Enum Fields ********************/
+    private final String text;
 
+    /******************** Enum Constructors ********************/
     ComparisonType(String text){
         this.text = text;
-    }
-
-    public String getText(){
-        return this.text;
     }
 
     public static ComparisonType fromString(String text){
@@ -22,4 +21,9 @@ public enum ComparisonType {
         }
         return null;
     }
-}
+
+    /******************** Getters ********************/
+    public String getText(){
+        return this.text;
+    }
+}//End of ComparisonType Enum

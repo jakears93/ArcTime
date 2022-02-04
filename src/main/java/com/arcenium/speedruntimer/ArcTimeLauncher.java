@@ -4,5 +4,4 @@ public class ArcTimeLauncher {
     public static void main(String[] args) {
         ArcTime.main(args);
     }
-
-}
+}//End of ArcTimeLauncher Class

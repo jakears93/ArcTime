@@ -5,16 +5,19 @@ import com.arcenium.speedruntimer.model.Split;
 import com.arcenium.speedruntimer.utility.Converter;
 
 public class SumOfBestComponent implements Component{
+    /******************** Component Fields ********************/
     private final String name;
     private double valueInSeconds;
     private final Converter converter;
 
+    /******************** Constructor ********************/
     public SumOfBestComponent() {
         this.name = "Sum Of Best Segments";
         this.valueInSeconds = 0;
         this.converter = Converter.getINSTANCE();
     }
 
+    /******************** Mandatory Functions For Interface ********************/
     @Override
     public void update(GameSplits splits, int currentSplitIndex) {
         valueInSeconds = 0.00;
@@ -32,4 +35,4 @@ public class SumOfBestComponent implements Component{
     public String getName() {
         return this.name;
     }
-}
+}//End of SumOfBestComponent Class

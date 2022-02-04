@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameSplits {
+    /******************** Fields ********************/
     private String gameTitle;
     private String category;
     private int attempts;
@@ -11,7 +12,7 @@ public class GameSplits {
     private double sumOfBest;
     private List<Split> splits;
 
-
+    /******************** Constructors ********************/
     public GameSplits() {
     }
 
@@ -24,9 +25,13 @@ public class GameSplits {
         this.splits = new ArrayList<>();
     }
 
+    /******************** Logic Functions ********************/
+
     public void incrementAttempts(){
         this.attempts++;
     }
+
+    /******************** Getters and Setters ********************/
 
     public String getGameTitle() {
         return gameTitle;
@@ -75,4 +80,4 @@ public class GameSplits {
     public void setSplits(List<Split> splits) {
         this.splits = splits;
     }
-}
+}//End of GameSplits Class

@@ -6,4 +6,4 @@ public interface Component {
     void update(GameSplits splits, int currentSplitIndex);
     String getName();
     String getValue();
-}
+}//End of Component Interface

@@ -3,12 +3,14 @@ package com.arcenium.speedruntimer.config;
 import javafx.scene.paint.Color;
 
 public class Colours {
+    /******************** Ui Colour Fields ********************/
     private Color bestTimeColor;
     private Color aheadOfTimeColor;
     private Color behindTimeColor;
     private Color aheadButLostTimeColor;
     private Color behindButGainedTimeColor;
 
+    /******************** Getters and Setters ********************/
     public Color getBestTimeColor() {
         return bestTimeColor;
     }
@@ -48,4 +50,4 @@ public class Colours {
     public void setBehindButGainedTimeColor(Color behindButGainedTimeColor) {
         this.behindButGainedTimeColor = behindButGainedTimeColor;
     }
-}
+}//End of Colours Class

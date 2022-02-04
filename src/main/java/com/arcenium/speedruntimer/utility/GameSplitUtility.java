@@ -5,7 +5,6 @@ import com.arcenium.speedruntimer.model.GameSplits;
 import com.arcenium.speedruntimer.model.Split;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,12 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 public class GameSplitUtility {
-    private FileManager fileManager;
+    /******************** Required Inputs ********************/
+    private final FileManager fileManager;
 
+    /******************** Constructor ********************/
     public GameSplitUtility(FileManager fileManager) {
         this.fileManager = fileManager;
     }
 
+    /******************** Utility Functions ********************/
     public GameSplits loadGameSplits(String gameTitle, String category) throws FileNotFoundException {
         String infoFilePath = fileManager.getSplitsDirectoryPath()+"/"+gameTitle+"/"+category+".info";
         File gameSplitsInfoFile = new File(infoFilePath);
@@ -27,7 +29,6 @@ public class GameSplitUtility {
         File gameSplitsFile = new File(splitsFilePath);
 
         GameSplits gameSplits = new GameSplits();
-
         if(!gameSplitsInfoFile.exists()){
             throw new FileNotFoundException("GameSplits Info File not found");
         }
@@ -37,7 +38,6 @@ public class GameSplitUtility {
 
         try{
             ObjectMapper mapper = new ObjectMapper();
-
             Map<String, Object> gameSplitsInfoMap = mapper.readValue(gameSplitsInfoFile, new TypeReference<>() {});
             gameSplits.setGameTitle(gameTitle);
             gameSplits.setCategory(category);
@@ -69,6 +69,8 @@ public class GameSplitUtility {
         File gameSplitsFile = new File(splitsFilePath);
 
         Map<String, Object> infoMap = new HashMap<>();
+        infoMap.put("gameTitle", gameSplits.getGameTitle());
+        infoMap.put("category", gameSplits.getCategory());
         infoMap.put("numOfAttempts", gameSplits.getAttempts());
         infoMap.put("pbTime", gameSplits.getPb());
         infoMap.put("sumOfBest", gameSplits.getSumOfBest());
@@ -86,4 +88,4 @@ public class GameSplitUtility {
             e.printStackTrace();
         }
     }
-}
+}//End of GameSplitUtility Class

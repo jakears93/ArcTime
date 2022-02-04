@@ -4,16 +4,19 @@ import com.arcenium.speedruntimer.model.GameSplits;
 import com.arcenium.speedruntimer.utility.Converter;
 
 public class CurrentSplitPBComponent implements Component{
+    /******************** Component Fields ********************/
     private final String name;
     private double valueInSeconds;
     private final Converter converter;
 
+    /******************** Constructor ********************/
     public CurrentSplitPBComponent() {
         this.name = "PB:";
         this.valueInSeconds = 0;
         this.converter = Converter.getINSTANCE();
     }
 
+    /******************** Mandatory Functions For Interface ********************/
     @Override
     public void update(GameSplits splits, int currentSplitIndex) {
         valueInSeconds = splits.getSplits().get(currentSplitIndex).getPbTime();
@@ -28,4 +31,4 @@ public class CurrentSplitPBComponent implements Component{
     public String getName() {
         return this.name;
     }
-}
+}//End of CurrentSplitPBComponent Class

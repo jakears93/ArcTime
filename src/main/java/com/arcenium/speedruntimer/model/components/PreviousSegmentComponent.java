@@ -8,13 +8,14 @@ import com.arcenium.speedruntimer.utility.SettingsManager;
 import org.apache.commons.math3.util.Precision;
 
 public class PreviousSegmentComponent implements Component{
-
+    /******************** Component Fields ********************/
     private final String name;
     private boolean isFirstSplit;
     private ComparisonType type;
     private double timeDifference;
     private final Converter converter;
 
+    /******************** Constructor ********************/
     public PreviousSegmentComponent() {
         this.type = SettingsManager.getINSTANCE().getSettings().getComparisonType();
         this.name = "Previous Segment("+type+")";
@@ -23,6 +24,7 @@ public class PreviousSegmentComponent implements Component{
         this.converter = Converter.getINSTANCE();
     }
 
+    /******************** Mandatory Functions For Interface ********************/
     @Override
     public void update(GameSplits splits, int currentSplitIndex) {
         if(currentSplitIndex == 0){
@@ -61,5 +63,4 @@ public class PreviousSegmentComponent implements Component{
     public String getName() {
         return this.name;
     }
-
-}
+}//End of PreviousSegmentComponent Class

@@ -2,43 +2,45 @@ package com.arcenium.speedruntimer.config;
 
 import java.io.File;
 
+//TODO convert to a singleton
 public class FileManager {
-    private String configRoot;
-    private File root;
-    private File savedKeyMappingsFile;
-    private File settingsFile;
-    private File colourSettingsFile;
-    private String splitsDirectoryPath;
+    /******************** Files and Paths ********************/
+    private String configRootPath;
+    private final File savedKeyMappingsFile;
+    private final File settingsFile;
+    private final File colourSettingsFile;
+    private final String splitsDirectoryPath;
 
+    /******************** Constructor ********************/
     public FileManager() {
         //TODO add microsoft and mac os default files
         String OS = System.getProperty("os.name").toLowerCase();
         if(isUnix(OS)){
-            configRoot = System.getProperty("user.home")+"/.config/ArcTime";
+            configRootPath = System.getProperty("user.home")+"/.config/ArcTime";
         }
         else{
             System.out.println("Invalid OS. Aborting Program.");
             System.exit(1);
         }
-        this.root = new File(configRoot);
-        if(!this.root.exists()){
+        File root = new File(configRootPath);
+        if(!root.exists()){
             root.mkdirs();
         }
 
-        this.splitsDirectoryPath = configRoot+"/splits";
+        this.splitsDirectoryPath = configRootPath +"/splits";
         File gameSplitDir = new File(this.splitsDirectoryPath);
         if(!gameSplitDir.exists()){
             gameSplitDir.mkdirs();
         }
 
-        this.savedKeyMappingsFile = new File(configRoot+"/keymap.cfg");
-        this.settingsFile = new File(configRoot+"/settings.cfg");
-        this.colourSettingsFile = new File(configRoot+"/colours.cfg");
-
+        this.savedKeyMappingsFile = new File(configRootPath +"/keymap.cfg");
+        this.settingsFile = new File(configRootPath +"/settings.cfg");
+        this.colourSettingsFile = new File(configRootPath +"/colours.cfg");
     }
 
-    public void setConfigRoot(String configRoot) {
-        this.configRoot = configRoot;
+    /******************** Getters and Setters ********************/
+    public void setConfigRootPath(String configRootPath) {
+        this.configRootPath = configRootPath;
     }
 
     public File getSavedKeyMappingsFile() {
@@ -57,21 +59,23 @@ public class FileManager {
         return splitsDirectoryPath;
     }
 
+    /******************** Functions to determine OS ********************/
     private boolean isWindows(String OS) {
-        return (OS.indexOf("win") >= 0);
+        return (OS.contains("win"));
     }
 
     private boolean isMac(String OS) {
-        return (OS.indexOf("mac") >= 0);
+        return (OS.contains("mac"));
     }
 
     private boolean isUnix(String OS) {
-        return (OS.indexOf("nix") >= 0
-                || OS.indexOf("nux") >= 0
-                || OS.indexOf("aix") > 0);
+        return (OS.contains("nix")
+                || OS.contains("nux")
+                || OS.contains("aix"));
     }
 
     private boolean isSolaris(String OS) {
-        return (OS.indexOf("sunos") >= 0);
+        return (OS.contains("sunos"));
     }
-}
+
+}//End of File Manager

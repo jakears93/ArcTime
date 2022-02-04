@@ -1,65 +1,67 @@
 package com.arcenium.speedruntimer.model;
 
-import com.arcenium.speedruntimer.utility.Converter;
-
-import java.util.Calendar;
-
 public class SpeedTimer implements Runnable {
-    //----------Fields / Attributes----------//
-    private Thread thread = null;
-    private String info;
+    /******************** Fields ********************/
+    private final Thread thread;
     private boolean isActive = false;
     private boolean exit = false;
+    private boolean isPaused = false;
     private double startMillis = 0;
     private double timeElapsedMillis = 0;
-    private final Converter converter;
 
-    //----------Constructors----------//
+    /******************** Constructor ********************/
     public SpeedTimer(){
-        this.converter = Converter.getINSTANCE();
         thread = new Thread(this);
         thread.start();
     }
 
-    //----------Class Specific Methods----------//
+    /******************** Logic Functions ********************/
     @Override
     public void run() {
         try{
             while(!exit){
                 while(isActive){
-                    timeElapsedMillis= Calendar.getInstance().getTimeInMillis() - startMillis;
-                    info = converter.secondsToTimeString(timeElapsedMillis / 1000);
+                    timeElapsedMillis= System.currentTimeMillis() - startMillis;
                     thread.sleep(10);
                 }
-                thread.sleep(10);
+                //Count time on pause
+                double startPauseTime = System.currentTimeMillis();
+                double pauseTimeElapsed = 0;
+                while(isPaused){
+                    pauseTimeElapsed = System.currentTimeMillis() - startPauseTime;
+                    thread.sleep(10);
+                }
+                //Add pause time to start time to counter time that was paused
+                startMillis += pauseTimeElapsed;
             }
         } catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 
     public void startTimer(){
-        startMillis = Calendar.getInstance().getTimeInMillis();
+        startMillis = System.currentTimeMillis();
         isActive = true;
+        isPaused = false;
+        exit = false;
     }
 
     public void togglePauseTimer(){
         this.isActive = !this.isActive;
+        this.isPaused = !this.isPaused;
     }
 
     public void stopTimer() {
         isActive = false;
-        exit = false;
+        isPaused = false;
+        exit = true;
     }
 
-    //----------Default Methods----------//
-    public String getInfo() {
-        return info;
+    public double poll() {
+        return timeElapsedMillis;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
+    /******************** Getters and Setters ********************/
 
     public boolean isActive() {
         return isActive;
@@ -69,19 +71,12 @@ public class SpeedTimer implements Runnable {
         isActive = active;
     }
 
-    public double getStartMillis() {
-        return startMillis;
+    public boolean isPaused() {
+        return isPaused;
     }
 
-    public void setStartMillis(double startMillis) {
-        this.startMillis = startMillis;
+    public void setPaused(boolean paused) {
+        isPaused = paused;
     }
 
-    public double getTimeElapsedMillis() {
-        return timeElapsedMillis;
-    }
-
-    public void setTimeElapsedMillis(double timeElapsedMillis) {
-        this.timeElapsedMillis = timeElapsedMillis;
-    }
 }//End of SpeedTimer Class
