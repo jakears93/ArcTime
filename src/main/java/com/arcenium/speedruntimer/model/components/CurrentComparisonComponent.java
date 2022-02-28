@@ -1,7 +1,7 @@
 package com.arcenium.speedruntimer.model.components;
 
 import com.arcenium.speedruntimer.model.ComparisonType;
-import com.arcenium.speedruntimer.model.GameSplits;
+import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.utility.SettingsManager;
 
 public class CurrentComparisonComponent implements Component{
@@ -17,7 +17,7 @@ public class CurrentComparisonComponent implements Component{
 
     /******************** Mandatory Functions For Interface ********************/
     @Override
-    public void update(GameSplits splits, int currentSplitIndex) {
+    public void update(GameInfo gameInfo, int currentSplitIndex) {
         this.comparisonType = SettingsManager.getINSTANCE().getSettings().getComparisonType();
     }
 

@@ -74,6 +74,7 @@ public class GlobalKeyListener implements NativeKeyListener {
 //            else    enable();
 //        }
     }
+
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
     }

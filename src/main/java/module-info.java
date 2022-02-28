@@ -14,4 +14,5 @@ module com.arcenium.speedruntimer {
     exports com.arcenium.speedruntimer.controller;
     exports com.arcenium.speedruntimer.model;
     opens com.arcenium.speedruntimer.controller to javafx.fxml;
+    exports com.arcenium.speedruntimer.model.components;
 }

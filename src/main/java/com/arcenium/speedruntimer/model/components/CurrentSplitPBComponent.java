@@ -1,6 +1,6 @@
 package com.arcenium.speedruntimer.model.components;
 
-import com.arcenium.speedruntimer.model.GameSplits;
+import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.utility.Converter;
 
 public class CurrentSplitPBComponent implements Component{
@@ -18,8 +18,8 @@ public class CurrentSplitPBComponent implements Component{
 
     /******************** Mandatory Functions For Interface ********************/
     @Override
-    public void update(GameSplits splits, int currentSplitIndex) {
-        valueInSeconds = splits.getSplits().get(currentSplitIndex).getPbTime();
+    public void update(GameInfo gameInfo, int currentSplitIndex) {
+        valueInSeconds = gameInfo.getSplits().get(currentSplitIndex).getPbTime();
     }
 
     @Override

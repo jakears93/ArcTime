@@ -1,6 +1,6 @@
 package com.arcenium.speedruntimer.model.components;
 
-import com.arcenium.speedruntimer.model.GameSplits;
+import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.model.Split;
 import com.arcenium.speedruntimer.utility.Converter;
 
@@ -19,10 +19,10 @@ public class SumOfBestComponent implements Component{
 
     /******************** Mandatory Functions For Interface ********************/
     @Override
-    public void update(GameSplits splits, int currentSplitIndex) {
+    public void update(GameInfo gameInfo, int currentSplitIndex) {
         valueInSeconds = 0.00;
-        for(Split split : splits.getSplits()){
-            valueInSeconds+=split.getBestTime();
+        for(Split split : gameInfo.getSplits()){
+            valueInSeconds+= split.getBestTime();
         }
     }
 

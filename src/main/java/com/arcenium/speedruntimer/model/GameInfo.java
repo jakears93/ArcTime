@@ -1,34 +1,44 @@
 package com.arcenium.speedruntimer.model;
 
+import com.arcenium.speedruntimer.utility.SettingsManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSplits {
+public class GameInfo {
     /******************** Fields ********************/
     private String gameTitle;
     private String category;
     private int attempts;
+    private int completedAttempts;
     private double pb;
     private double sumOfBest;
     private List<Split> splits;
+    private ComparisonType comparisonType;
 
     /******************** Constructors ********************/
-    public GameSplits() {
+    public GameInfo() {
     }
 
-    public GameSplits(String gameTitle, String category, int attempts, double pb, double sumOfBest) {
+    public GameInfo(String gameTitle, String category, int attempts, int completedAttempts, double pb, double sumOfBest) {
         this.gameTitle = gameTitle;
         this.category = category;
         this.attempts = attempts;
+        this.completedAttempts = completedAttempts;
         this.pb = pb;
         this.sumOfBest = sumOfBest;
         this.splits = new ArrayList<>();
+        this.comparisonType = SettingsManager.getINSTANCE().getSettings().getComparisonType();
     }
 
     /******************** Logic Functions ********************/
 
     public void incrementAttempts(){
         this.attempts++;
+    }
+
+    public void incCompletedAttempts(){
+        this.completedAttempts++;
     }
 
     /******************** Getters and Setters ********************/
@@ -57,6 +67,14 @@ public class GameSplits {
         this.attempts = attempts;
     }
 
+    public int getCompletedAttempts() {
+        return completedAttempts;
+    }
+
+    public void setCompletedAttempts(int completedAttempts) {
+        this.completedAttempts = completedAttempts;
+    }
+
     public double getPb() {
         return pb;
     }
@@ -79,5 +97,9 @@ public class GameSplits {
 
     public void setSplits(List<Split> splits) {
         this.splits = splits;
+    }
+
+    public ComparisonType getComparisonType() {
+        return comparisonType;
     }
 }//End of GameSplits Class

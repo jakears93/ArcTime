@@ -1,7 +1,7 @@
 package com.arcenium.speedruntimer.utility;
 
 import com.arcenium.speedruntimer.config.FileManager;
-import com.arcenium.speedruntimer.model.GameSplits;
+import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.model.Split;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,23 +12,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameSplitUtility {
+public class GameInfoUtility {
     /******************** Required Inputs ********************/
     private final FileManager fileManager;
 
     /******************** Constructor ********************/
-    public GameSplitUtility(FileManager fileManager) {
+    public GameInfoUtility(FileManager fileManager) {
         this.fileManager = fileManager;
     }
 
     /******************** Utility Functions ********************/
-    public GameSplits loadGameSplits(String gameTitle, String category) throws FileNotFoundException {
+    public GameInfo loadGameInfo(String gameTitle, String category) throws FileNotFoundException {
         String infoFilePath = fileManager.getSplitsDirectoryPath()+"/"+gameTitle+"/"+category+".info";
         File gameSplitsInfoFile = new File(infoFilePath);
         String splitsFilePath = fileManager.getSplitsDirectoryPath()+"/"+gameTitle+"/"+category+".splits";
         File gameSplitsFile = new File(splitsFilePath);
 
-        GameSplits gameSplits = new GameSplits();
+        GameInfo gameInfo = new GameInfo();
         if(!gameSplitsInfoFile.exists()){
             throw new FileNotFoundException("GameSplits Info File not found");
         }
@@ -39,15 +39,15 @@ public class GameSplitUtility {
         try{
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> gameSplitsInfoMap = mapper.readValue(gameSplitsInfoFile, new TypeReference<>() {});
-            gameSplits.setGameTitle(gameTitle);
-            gameSplits.setCategory(category);
-            gameSplits.setAttempts((int)(gameSplitsInfoMap.get("numOfAttempts")));
-            gameSplits.setPb((double)(gameSplitsInfoMap.get("pbTime")));
-            gameSplits.setSumOfBest((double) (gameSplitsInfoMap.get("sumOfBest")));
+            gameInfo.setGameTitle(gameTitle);
+            gameInfo.setCategory(category);
+            gameInfo.setAttempts((int)(gameSplitsInfoMap.get("numOfAttempts")));
+            gameInfo.setPb((double)(gameSplitsInfoMap.get("pbTime")));
+            gameInfo.setSumOfBest((double) (gameSplitsInfoMap.get("sumOfBest")));
             System.out.println("Game Splits Info Loaded from File: " + gameSplitsInfoFile.getPath());
 
             List<Split> splits = mapper.readValue(gameSplitsFile, new TypeReference<>(){});
-            gameSplits.setSplits(splits);
+            gameInfo.setSplits(splits);
 
             System.out.println("Game Splits Loaded from File: " + gameSplitsFile.getPath());
         } catch (IOException e) {
@@ -55,32 +55,32 @@ public class GameSplitUtility {
             System.out.println("Error Loading GameSplit Object.");
             return null;
         }
-        return gameSplits;
+        return gameInfo;
     }
 
-    public void saveGameSplits(GameSplits gameSplits){
-        File directory = new File(fileManager.getSplitsDirectoryPath()+"/"+gameSplits.getGameTitle());
+    public void saveGameInfo(GameInfo gameInfo){
+        File directory = new File(fileManager.getSplitsDirectoryPath()+"/"+ gameInfo.getGameTitle());
         if(!directory.exists()){
             directory.mkdirs();
         }
-        String infoFilePath = fileManager.getSplitsDirectoryPath()+"/"+gameSplits.getGameTitle()+"/"+gameSplits.getCategory()+".info";
+        String infoFilePath = fileManager.getSplitsDirectoryPath()+"/"+ gameInfo.getGameTitle()+"/"+ gameInfo.getCategory()+".info";
         File gameSplitsInfoFile = new File(infoFilePath);
-        String splitsFilePath = fileManager.getSplitsDirectoryPath()+"/"+gameSplits.getGameTitle()+"/"+gameSplits.getCategory()+".splits";
+        String splitsFilePath = fileManager.getSplitsDirectoryPath()+"/"+ gameInfo.getGameTitle()+"/"+ gameInfo.getCategory()+".splits";
         File gameSplitsFile = new File(splitsFilePath);
 
         Map<String, Object> infoMap = new HashMap<>();
-        infoMap.put("gameTitle", gameSplits.getGameTitle());
-        infoMap.put("category", gameSplits.getCategory());
-        infoMap.put("numOfAttempts", gameSplits.getAttempts());
-        infoMap.put("pbTime", gameSplits.getPb());
-        infoMap.put("sumOfBest", gameSplits.getSumOfBest());
+        infoMap.put("gameTitle", gameInfo.getGameTitle());
+        infoMap.put("category", gameInfo.getCategory());
+        infoMap.put("numOfAttempts", gameInfo.getAttempts());
+        infoMap.put("pbTime", gameInfo.getPb());
+        infoMap.put("sumOfBest", gameInfo.getSumOfBest());
 
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writerWithDefaultPrettyPrinter().writeValue(gameSplitsInfoFile, infoMap);
             System.out.println("GameSplit Info Saved to "+gameSplitsInfoFile.getPath());
 
-            mapper.writerWithDefaultPrettyPrinter().writeValue(gameSplitsFile, gameSplits.getSplits());
+            mapper.writerWithDefaultPrettyPrinter().writeValue(gameSplitsFile, gameInfo.getSplits());
 
             System.out.println("GameSplit Splits Saved to "+gameSplitsFile.getPath());
         } catch (IOException e) {

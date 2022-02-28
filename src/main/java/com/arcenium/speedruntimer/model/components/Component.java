@@ -1,9 +1,9 @@
 package com.arcenium.speedruntimer.model.components;
 
-import com.arcenium.speedruntimer.model.GameSplits;
+import com.arcenium.speedruntimer.model.GameInfo;
 
 public interface Component {
-    void update(GameSplits splits, int currentSplitIndex);
+    void update(GameInfo gameInfo, int currentSplitIndex);
     String getName();
     String getValue();
 }//End of Component Interface

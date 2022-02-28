@@ -1,6 +1,6 @@
 package com.arcenium.speedruntimer.model.components;
 
-import com.arcenium.speedruntimer.model.GameSplits;
+import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.model.Split;
 import com.arcenium.speedruntimer.utility.Converter;
 
@@ -18,15 +18,15 @@ public class BestPossibleTimeComponent implements Component{
 
     /******************** Mandatory Functions For Interface ********************/
     @Override
-    public void update(GameSplits splits, int currentSplitIndex) {
+    public void update(GameInfo gameInfo, int currentSplitIndex) {
         valueInSeconds = 0.00;
         int index = 0;
-        for(Split split : splits.getSplits()){
+        for(Split split : gameInfo.getSplits()){
             if(index < currentSplitIndex){
-                valueInSeconds+=split.getLength();
+                valueInSeconds+= split.getLength();
             }
             else{
-                valueInSeconds+=split.getBestTime();
+                valueInSeconds+= split.getBestTime();
             }
             index++;
         }

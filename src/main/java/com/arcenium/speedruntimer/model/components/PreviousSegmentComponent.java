@@ -1,7 +1,7 @@
 package com.arcenium.speedruntimer.model.components;
 
 import com.arcenium.speedruntimer.model.ComparisonType;
-import com.arcenium.speedruntimer.model.GameSplits;
+import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.model.Split;
 import com.arcenium.speedruntimer.utility.Converter;
 import com.arcenium.speedruntimer.utility.SettingsManager;
@@ -26,7 +26,7 @@ public class PreviousSegmentComponent implements Component{
 
     /******************** Mandatory Functions For Interface ********************/
     @Override
-    public void update(GameSplits splits, int currentSplitIndex) {
+    public void update(GameInfo gameInfo, int currentSplitIndex) {
         if(currentSplitIndex == 0){
             this.isFirstSplit = true;
             return;
@@ -34,12 +34,12 @@ public class PreviousSegmentComponent implements Component{
         this.isFirstSplit = false;
         this.type = SettingsManager.getINSTANCE().getSettings().getComparisonType();
 
-        Split split = splits.getSplits().get(currentSplitIndex-1);
+        Split split = gameInfo.getSplits().get(currentSplitIndex-1);
         if(this.type == ComparisonType.PB){
-            this.timeDifference = split.getPbTime()-split.getLength();
+            this.timeDifference = split.getPbTime()- split.getLength();
         }
         else if(this.type == ComparisonType.BEST){
-            this.timeDifference = split.getBestTime()-split.getLength();
+            this.timeDifference = split.getBestTime()- split.getLength();
         }
     }
 
