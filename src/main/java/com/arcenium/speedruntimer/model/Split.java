@@ -7,11 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Split {
     /******************** Split Information Fields ********************/
     private String name;
-    @JsonIgnore
     private double startTime;
-    @JsonIgnore
     private double endTime;
-    @JsonIgnore
     private double length;
     private double pbTime;
     private double bestTime;
@@ -21,11 +18,14 @@ public class Split {
     public Split(
             @JsonProperty("name") String name,
             @JsonProperty("pbTime") double pbTime,
-            @JsonProperty("bestTime") double bestTime) {
+            @JsonProperty("bestTime") double bestTime,
+            @JsonProperty("startTime") double startTime,
+            @JsonProperty("endTime") double endTime,
+            @JsonProperty("length") double length) {
         this.name = name;
-        this.startTime = 0;
-        this.endTime = 0;
-        this.length = 0;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.length = length;
         this.pbTime = pbTime;
         this.bestTime = bestTime;
     }

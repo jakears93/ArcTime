@@ -1,5 +1,6 @@
 package com.arcenium.speedruntimer.service;
 
+import com.arcenium.speedruntimer.model.ComparisonType;
 import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.model.SpeedTimer;
 import com.arcenium.speedruntimer.model.Split;
@@ -11,13 +12,15 @@ import java.util.List;
 
 public class RunService {
     /******************** Fields ********************/
+    private GameInfo referenceGameInfo;
     private GameInfo gameInfo;
-    private GameInfo modifiedGameInfo;
     private SpeedTimer timer;
     private int runSplitIndex;
     private boolean hasNewBest;
     private boolean isActive;
     private int numOfSplits;
+    private double sumOfSplitLengths;
+    private double sumOfCurrentComparisonSplits;
     List<Component> components;
 
     /******************** Constructor and Initializers ********************/
@@ -38,14 +41,14 @@ public class RunService {
     private void loadGameInfo(){
         //TODO temp solution of hardcoding game to load
         GameInfo gameInfo = SettingsManager.getINSTANCE().loadGameInfo("Super Mario 64", "16 Star");
-        this.setGameInfo(gameInfo);
+        this.setReferenceGameInfo(gameInfo);
     }
 
-    public void setGameInfo(GameInfo gameInfo) {
+    public void setReferenceGameInfo(GameInfo referenceGameInfo) {
         //Clone splits, so we can modify them but keep the originals if user doesn't want to save them
-        this.gameInfo = gameInfo;
-        numOfSplits = gameInfo.getSplits().size();
-        this.modifiedGameInfo = cloneGameInfo(gameInfo);
+        this.referenceGameInfo = referenceGameInfo;
+        numOfSplits = referenceGameInfo.getSplits().size();
+        this.gameInfo = cloneGameInfo(referenceGameInfo);
 
     }
 
@@ -70,8 +73,15 @@ public class RunService {
         hasNewBest = false;
         isActive = true;
         this.runSplitIndex = 0;
-        this.modifiedGameInfo.incrementAttempts();
+        this.sumOfSplitLengths = 0;
+        this.gameInfo.incrementAttempts();
         this.timer = new SpeedTimer();
+        if(SettingsManager.getINSTANCE().getSettings().getComparisonType() == ComparisonType.PB){
+            this.sumOfCurrentComparisonSplits = referenceGameInfo.getSplits().get(0).getPbTime();
+        }
+        else if(SettingsManager.getINSTANCE().getSettings().getComparisonType() == ComparisonType.BEST){
+            this.sumOfCurrentComparisonSplits = referenceGameInfo.getSplits().get(0).getBestTime();
+        }
         timer.startTimer();
     }
 
@@ -80,15 +90,23 @@ public class RunService {
         //Increment split index
         this.runSplitIndex++;
         //Set start time
-        this.modifiedGameInfo.getSplits().get(runSplitIndex).setStartTime(splitTime);
+        this.gameInfo.getSplits().get(runSplitIndex).setStartTime(splitTime);
         //Update last split
-        Split lastSplit = this.modifiedGameInfo.getSplits().get(runSplitIndex-1);
+        Split lastSplit = this.gameInfo.getSplits().get(runSplitIndex-1);
         lastSplit.setEndTime(splitTime);
         //Update best time in modified split list
         lastSplit.updateLength();
         System.out.println(lastSplit.getName() +": " + lastSplit.getLength());
         if(lastSplit.getLength() > 0 && lastSplit.getLength() < lastSplit.getBestTime()){
             lastSplit.setBestTime(lastSplit.getLength());
+        }
+        sumOfSplitLengths += lastSplit.getLength();
+
+        if(SettingsManager.getINSTANCE().getSettings().getComparisonType() == ComparisonType.PB){
+            this.sumOfCurrentComparisonSplits += referenceGameInfo.getSplits().get(runSplitIndex).getPbTime();
+        }
+        else if(SettingsManager.getINSTANCE().getSettings().getComparisonType() == ComparisonType.BEST){
+            this.sumOfCurrentComparisonSplits += referenceGameInfo.getSplits().get(runSplitIndex).getBestTime();
         }
     }
 
@@ -99,19 +117,19 @@ public class RunService {
     }
 
     public void skipSplit(){
-        this.modifiedGameInfo.getSplits().get(runSplitIndex).setEndTime(0);
-        this.modifiedGameInfo.getSplits().get(runSplitIndex).setLength(0);
+        this.gameInfo.getSplits().get(runSplitIndex).setEndTime(0);
+        this.gameInfo.getSplits().get(runSplitIndex).setLength(0);
         //Start new split
         this.runSplitIndex++;
         //Set start time of next split to start time of last one to prevent false best time
-        this.modifiedGameInfo.getSplits().get(runSplitIndex).setStartTime(modifiedGameInfo.getSplits().get(runSplitIndex).getStartTime());
+        this.gameInfo.getSplits().get(runSplitIndex).setStartTime(gameInfo.getSplits().get(runSplitIndex).getStartTime());
     }
 
     public void previousSplit(){
         if(this.runSplitIndex > 0){
             this.runSplitIndex--;
-            this.modifiedGameInfo.getSplits().get(runSplitIndex).setEndTime(0);
-            this.modifiedGameInfo.getSplits().get(runSplitIndex).setLength(0);
+            this.gameInfo.getSplits().get(runSplitIndex).setEndTime(0);
+            this.gameInfo.getSplits().get(runSplitIndex).setLength(0);
         }
     }
 
@@ -124,31 +142,31 @@ public class RunService {
     public void finalizeRun(){
         //Update final split
         double splitTime = timer.poll();
-        Split finalSplit = this.modifiedGameInfo.getSplits().get(runSplitIndex);
+        Split finalSplit = this.gameInfo.getSplits().get(runSplitIndex);
         finalSplit.setEndTime(splitTime);
         //Update best time in modified split list
         finalSplit.updateLength();
         System.out.println(finalSplit.getName() + finalSplit.getLength());
 
         if(finalSplit.getLength() > 0 && finalSplit.getLength() < finalSplit.getBestTime()){
-            modifiedGameInfo.getSplits().get(runSplitIndex).setBestTime(finalSplit.getLength());
+            gameInfo.getSplits().get(runSplitIndex).setBestTime(finalSplit.getLength());
         }
 
         checkForPb();
         checkForBests();
-        this.setGameInfo(modifiedGameInfo);
-        SettingsManager.getINSTANCE().saveGameInfo(this.gameInfo);
+        this.setReferenceGameInfo(gameInfo);
+        SettingsManager.getINSTANCE().saveGameInfo(this.referenceGameInfo);
     }
 
     public boolean checkForPb(){
         double sumOfTime = 0;
-        for(int i = 0; i< modifiedGameInfo.getSplits().size(); i++){
-            sumOfTime += modifiedGameInfo.getSplits().get(i).getLength();
+        for(int i = 0; i< gameInfo.getSplits().size(); i++){
+            sumOfTime += gameInfo.getSplits().get(i).getLength();
         }
         System.out.println("Final Time: "+sumOfTime);
-        if(sumOfTime < modifiedGameInfo.getPb() || modifiedGameInfo.getPb() == 0){
-            modifiedGameInfo.setPb(sumOfTime);
-            updatePbTimes(modifiedGameInfo.getSplits());
+        if(sumOfTime < gameInfo.getPb() || gameInfo.getPb() == 0){
+            gameInfo.setPb(sumOfTime);
+            updatePbTimes(gameInfo.getSplits());
             System.out.println("new pb: "+sumOfTime);
 
             return true;
@@ -165,15 +183,15 @@ public class RunService {
     public boolean checkForBests(){
         boolean hasNewBest = false;
         double sumOfBest = 0;
-        for(int i = 0; i< modifiedGameInfo.getSplits().size(); i++){
-            if(modifiedGameInfo.getSplits().get(i).getLength() < gameInfo.getSplits().get(i).getBestTime()){
+        for(int i = 0; i< gameInfo.getSplits().size(); i++){
+            if(gameInfo.getSplits().get(i).getLength() < referenceGameInfo.getSplits().get(i).getBestTime()){
                 hasNewBest = true;
             }
-            sumOfBest += modifiedGameInfo.getSplits().get(i).getBestTime();
+            sumOfBest += gameInfo.getSplits().get(i).getBestTime();
         }
         if(hasNewBest){
             System.out.println("new best: "+sumOfBest);
-            modifiedGameInfo.setSumOfBest(sumOfBest);
+            gameInfo.setSumOfBest(sumOfBest);
             return true;
         }
         return false;
@@ -208,8 +226,8 @@ public class RunService {
         this.timer = timer;
     }
 
-    public GameInfo getGameInfo() {
-        return gameInfo;
+    public GameInfo getReferenceGameInfo() {
+        return referenceGameInfo;
     }
 
     public boolean isHasNewBest() {
@@ -228,15 +246,31 @@ public class RunService {
         isActive = active;
     }
 
-    public GameInfo getModifiedGameInfo() {
-        return modifiedGameInfo;
+    public GameInfo getGameInfo() {
+        return gameInfo;
     }
 
-    public void setModifiedGameInfo(GameInfo modifiedGameInfo) {
-        this.modifiedGameInfo = modifiedGameInfo;
+    public void setGameInfo(GameInfo gameInfo) {
+        this.gameInfo = gameInfo;
     }
 
     public List<Component> getComponents() {
         return components;
+    }
+
+    public double getSumOfSplitLengths() {
+        return sumOfSplitLengths;
+    }
+
+    public void setSumOfSplitLengths(double sumOfSplitLengths) {
+        this.sumOfSplitLengths = sumOfSplitLengths;
+    }
+
+    public double getSumOfCurrentComparisonSplits() {
+        return sumOfCurrentComparisonSplits;
+    }
+
+    public void setSumOfCurrentComparisonSplits(double sumOfCurrentComparisonSplits) {
+        this.sumOfCurrentComparisonSplits = sumOfCurrentComparisonSplits;
     }
 }//End of RunService Class

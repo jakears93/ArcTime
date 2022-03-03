@@ -50,8 +50,10 @@ public class FrontController{
         //If all splits have been ended, finalize the run
         else if(runService.isActive() && runService.getRunSplitIndex() >= runService.getNumOfSplits()-1){
             runService.stopRun();
-            uiService.stopUiUpdater();
             runService.finalizeRun();
+            uiService.stopUiUpdater();
+            //Update last split row
+            uiService.finalizeRun();
         }
         //Regular split behaviour
         else{
@@ -59,12 +61,8 @@ public class FrontController{
             double splitTime = runService.getTimer().poll();
             //Update internal state
             runService.nextSplit(splitTime);
-
-            //Set previous split labels to final values.
-            //TODO belongs in UiService
-            Label updateSplitTime = (Label) uiService.getSplitLayout().getChildren().get((runService.getRunSplitIndex()-1)*4+3);
-            String time = Converter.getINSTANCE().secondsToTimeString(runService.getModifiedGameInfo().getSplits().get(runService.getRunSplitIndex()-1).getLength());
-            updateSplitTime.setText(time);
+            //Update last split row
+            uiService.finalizeLastSplit();
         }
     }
 
