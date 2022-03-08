@@ -6,7 +6,9 @@ import com.arcenium.speedruntimer.service.UiService;
 import com.arcenium.speedruntimer.utility.Converter;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 
 public class FrontController{
@@ -53,7 +55,7 @@ public class FrontController{
             runService.finalizeRun();
             uiService.stopUiUpdater();
             //Update last split row
-            uiService.finalizeRun();
+            uiService.finalizeRun(runService.getTimer().poll());
         }
         //Regular split behaviour
         else{
@@ -61,8 +63,10 @@ public class FrontController{
             double splitTime = runService.getTimer().poll();
             //Update internal state
             runService.nextSplit(splitTime);
+            //Update split info in timer area
+            uiService.updateTimerArea();
             //Update last split row
-            uiService.finalizeLastSplit();
+            uiService.finalizeLastSplit(splitTime);
         }
     }
 

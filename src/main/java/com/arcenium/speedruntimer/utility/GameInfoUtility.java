@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,5 +88,22 @@ public class GameInfoUtility {
             System.out.println("Error saving GameSplit.");
             e.printStackTrace();
         }
+    }
+
+    public List<GameInfo> getAllGames(){
+        ArrayList<GameInfo> games = new ArrayList<>();
+        String infoDirectoryPath = fileManager.getSplitsDirectoryPath()+"/";
+        File[] gameDirectories = new File(infoDirectoryPath).listFiles(File::isDirectory);
+        for (File game : gameDirectories){
+            File[] gameCategories = new File(game+"/").listFiles(g-> g.getName().endsWith("info"));
+            for (File category : gameCategories) {
+                try {
+                    games.add(loadGameInfo(game.getName(), category.getName().substring(0, category.getName().length()-5)));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return games;
     }
 }//End of GameSplitUtility Class

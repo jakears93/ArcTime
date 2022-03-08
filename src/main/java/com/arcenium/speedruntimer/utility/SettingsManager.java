@@ -3,6 +3,7 @@ package com.arcenium.speedruntimer.utility;
 import com.arcenium.speedruntimer.config.Settings;
 import com.arcenium.speedruntimer.model.GameInfo;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 public class SettingsManager {
     /******************** Singleton Instance and Children ********************/
@@ -75,5 +76,9 @@ public class SettingsManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<GameInfo> getAllGames(){
+        return gameInfoUtility.getAllGames();
     }
 }//End of SettingsManager Class

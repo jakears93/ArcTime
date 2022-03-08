@@ -1,22 +1,32 @@
 package com.arcenium.speedruntimer.service;
 
+import com.arcenium.speedruntimer.ArcTime;
+import com.arcenium.speedruntimer.config.Colours;
 import com.arcenium.speedruntimer.model.ComparisonType;
+import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.model.Split;
 import com.arcenium.speedruntimer.utility.Converter;
 import com.arcenium.speedruntimer.utility.SettingsManager;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.List;
 
 public class UiService {
@@ -50,6 +60,10 @@ public class UiService {
     private List<Label> componentTitleLabels;
     private List<Label> componentInfoLabels;
 
+
+    private ContextMenu contextMenu;
+
+
     /******************** Constructor ********************/
     public UiService(VBox view, RunService runService) {
         this.view = view;
@@ -77,7 +91,9 @@ public class UiService {
         initSplitLayout();
         initTimerLayout();
         initComponentLayout();
+        view.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 
+        initContextMenu();
     }
 
     public void initUiUpdater() {
@@ -160,10 +176,120 @@ public class UiService {
             exception.printStackTrace();
             System.exit(-1);
         }
+        mainTimerLabel.setText(Converter.getINSTANCE().secondsToTimeString(0));
+        splitTimerLabel.setText(Converter.getINSTANCE().secondsToTimeString(0));
+        currentSplitNameLabel.setText(runService.getGameInfo().getSplits().get(0).getName());
+        currentSplitPbLabel.setText("PB: "+Converter.getINSTANCE().secondsToTimeString(runService.getGameInfo().getSplits().get(0).getPbTime()));
+        currentSplitBestLabel.setText("BEST: "+Converter.getINSTANCE().secondsToTimeString(runService.getGameInfo().getSplits().get(0).getBestTime()));
     }
 
     private void initComponentLayout(){
         //TODO init components
+    }
+
+
+    /******************** Context Menu Functions ********************/
+    private void initContextMenu(){
+        // Create the context menu items
+        MenuItem editSplits = new MenuItem("Edit");
+        editSplits.setOnAction(e-> {
+            //Do nothing is run is active
+            if(runService.isActive()){
+                e.consume();
+                return;
+            }
+            //Open up blank split template
+            try{
+                Stage stage = initEditSplitStage();
+                stage.show();
+            }
+            catch (IOException exception){
+                exception.printStackTrace();
+            }
+            e.consume();
+        });
+
+        MenuItem newSplits = new MenuItem("New");
+        newSplits.setOnAction(e-> {
+            //Do nothing is run is active
+            if(runService.isActive()){
+                e.consume();
+                return;
+            }
+            //Open up blank split template
+            try{
+                Stage stage = initEditSplitStage();
+                stage.show();
+            }
+            catch (IOException exception){
+                exception.printStackTrace();
+            }
+            e.consume();
+        });
+
+        MenuItem openSplits = new MenuItem("Open");
+        openSplits.setOnAction(e-> {
+            //TODO popup to open splits
+            System.out.println("Opening GameInfo");
+            List<GameInfo> games = SettingsManager.getINSTANCE().getAllGames();
+            for(GameInfo game : games){
+                System.out.println("game = " + game);
+            }
+            e.consume();
+        });
+
+        MenuItem saveSplits = new MenuItem("Save");
+        saveSplits.setOnAction(e-> {
+            //TODO save game info
+            System.out.println("Saving GameInfo");
+            e.consume();
+        });
+
+        MenuItem about = new MenuItem("About");
+        about.setOnAction(e-> {
+            //TODO show about app
+            System.out.println("About");
+            e.consume();
+        });
+
+        MenuItem exit = new MenuItem("Exit");
+        exit.setOnAction(e-> {
+            e.consume();
+            System.exit(0);
+        });
+
+        MenuItem settings = new MenuItem("Settings");
+        settings.setOnAction(e-> {
+            //TODO load settings page
+            System.out.println("Settings Page Loading");
+            e.consume();
+        });
+
+        // Create a context menu
+        contextMenu = new ContextMenu(editSplits, newSplits, openSplits, saveSplits, about, settings, exit);
+        contextMenu.setAutoHide(false);
+
+        // Add the context menu to the entire scene graph.
+        view.setOnContextMenuRequested(event-> {
+            contextMenu.show(view, event.getScreenX(), event.getScreenY());
+            event.consume();
+        });
+
+        //Hide Context Menu if clicking outside options
+        view.setOnMouseReleased(event->{
+            if(event.getButton() == MouseButton.PRIMARY && contextMenu.isShowing()){
+                contextMenu.hide();
+                event.consume();
+            }
+        });
+    }
+
+    private Stage initEditSplitStage() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ArcTime.class.getResource("edit-splits.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), SettingsManager.getINSTANCE().getSettings().getEditWindowWidth(), SettingsManager.getINSTANCE().getSettings().getEditWindowHeight());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        return stage;
     }
 
     /******************** Update Functions ********************/
@@ -183,9 +309,8 @@ public class UiService {
             splitTime = polledTime-runService.getSumOfSplitLengths();
         }
 
-        //Update split timer
+        //Get split timer
         String splitTimeString = Converter.getINSTANCE().secondsToTimeString(splitTime);
-        splitTimerLabel.setText(splitTimeString);
 
         //Update time difference with comparison if within 10% of time
         Split currentSplitComparison = runService.getReferenceGameInfo().getSplits().get(runService.getRunSplitIndex());
@@ -194,11 +319,25 @@ public class UiService {
             Label updateTimeDifference = (Label) splitLayout.getChildren().get(runService.getRunSplitIndex()*4+1);
             if(timeDifference < 0){
                 updateTimeDifference.setText(Converter.getINSTANCE().secondsToTimeString(timeDifference));
+                updateTimeDifference.setTextFill(SettingsManager.getINSTANCE().getSettings().getColours().getAheadOfTimeColor());
+                splitTimerLabel.setText(splitTimeString);
+                splitTimerLabel.setTextFill(SettingsManager.getINSTANCE().getSettings().getColours().getAheadOfTimeColor());
+
             }
             else{
                 updateTimeDifference.setText("+"+Converter.getINSTANCE().secondsToTimeString(timeDifference));
+                updateTimeDifference.setTextFill(SettingsManager.getINSTANCE().getSettings().getColours().getBehindTimeColor());
+                splitTimerLabel.setText(splitTimeString);
+                splitTimerLabel.setTextFill(SettingsManager.getINSTANCE().getSettings().getColours().getBehindTimeColor());
             }
         }
+    }
+
+    public void updateTimerArea(){
+        Split split = runService.getGameInfo().getSplits().get(runService.getRunSplitIndex());
+        currentSplitNameLabel.setText(split.getName());
+        currentSplitPbLabel.setText("PB: "+Converter.getINSTANCE().secondsToTimeString(split.getPbTime()));
+        currentSplitBestLabel.setText("BEST: "+Converter.getINSTANCE().secondsToTimeString(split.getBestTime()));
     }
 
     public void updateSplitGrid(){
@@ -209,13 +348,17 @@ public class UiService {
 
     }
 
-    public void finalizeLastSplit(){
+    public void finalizeLastSplit(double runTime){
         //Get split time by subtracting the previous split's end time
         double splitTime = runService.getGameInfo().getSplits().get(runService.getRunSplitIndex()-1).getLength();
 
         //Update last split time label
         Label updateSplitTime = (Label) splitLayout.getChildren().get((runService.getRunSplitIndex()-1)*4+2);
         updateSplitTime.setText(Converter.getINSTANCE().secondsToTimeString(splitTime));
+
+        //Update last splits total time field
+        Label splitTotalTime = (Label) splitLayout.getChildren().get((runService.getRunSplitIndex()-1)*4+3);
+        splitTotalTime.setText(Converter.getINSTANCE().secondsToTimeString(runTime/1000));
 
         //Update time difference with comparison
         Split currentSplitComparison = runService.getReferenceGameInfo().getSplits().get(runService.getRunSplitIndex()-1);
@@ -232,19 +375,30 @@ public class UiService {
         Label updateTimeDifference = (Label) splitLayout.getChildren().get((runService.getRunSplitIndex()-1)*4+1);
         if(timeDifference < 0){
             updateTimeDifference.setText(Converter.getINSTANCE().secondsToTimeString(timeDifference));
+            updateTimeDifference.setTextFill(SettingsManager.getINSTANCE().getSettings().getColours().getAheadOfTimeColor());
         }
         else{
             updateTimeDifference.setText("+"+Converter.getINSTANCE().secondsToTimeString(timeDifference));
+            updateTimeDifference.setTextFill(SettingsManager.getINSTANCE().getSettings().getColours().getBehindTimeColor());
+
         }
     }
 
-    public void finalizeRun(){
+    public void finalizeRun(double runTime){
         //Get split time by subtracting the previous split's end time
         double splitTime = runService.getGameInfo().getSplits().get(runService.getNumOfSplits()-1).getLength();
+
+        //Update timer label times
+        mainTimerLabel.setText(Converter.getINSTANCE().secondsToTimeString(runTime/1000));
+        splitTimerLabel.setText(Converter.getINSTANCE().secondsToTimeString(splitTime));
 
         //Update last split time label
         Label updateSplitTime = (Label) splitLayout.getChildren().get((runService.getNumOfSplits()-1)*4+2);
         updateSplitTime.setText(Converter.getINSTANCE().secondsToTimeString(splitTime));
+
+        //Update last splits total time field
+        Label splitTotalTime = (Label) splitLayout.getChildren().get((runService.getNumOfSplits()-1)*4+3);
+        splitTotalTime.setText(Converter.getINSTANCE().secondsToTimeString(runTime/1000));
 
         //Update time difference with comparison
         Split currentSplitComparison = runService.getReferenceGameInfo().getSplits().get(runService.getNumOfSplits()-1);
@@ -267,8 +421,4 @@ public class UiService {
         }
     }
 
-    /******************** Default Functions ********************/
-    public GridPane getSplitLayout() {
-        return this.splitLayout;
-    }
 }//End of UiService Class

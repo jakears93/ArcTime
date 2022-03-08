@@ -11,6 +11,8 @@ public class Settings {
     private ComparisonType comparisonType;
     private int windowHeight;
     private int windowWidth;
+    private int editWindowHeight;
+    private int editWindowWidth;
     private int timerDecimalAccuracy;
     private int refreshIntervalInMillis;
     private boolean showKeyEventLogging;
@@ -71,6 +73,22 @@ public class Settings {
 
     public void setWindowWidth(int windowWidth) {
         this.windowWidth = windowWidth;
+    }
+
+    public int getEditWindowHeight() {
+        return editWindowHeight;
+    }
+
+    public void setEditWindowHeight(int editWindowHeight) {
+        this.editWindowHeight = editWindowHeight;
+    }
+
+    public int getEditWindowWidth() {
+        return editWindowWidth;
+    }
+
+    public void setEditWindowWidth(int editWindowWidth) {
+        this.editWindowWidth = editWindowWidth;
     }
 
     public int getTimerDecimalAccuracy() {

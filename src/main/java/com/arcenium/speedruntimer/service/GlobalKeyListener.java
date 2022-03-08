@@ -15,6 +15,7 @@ public class GlobalKeyListener implements NativeKeyListener {
     /******************** Fields ********************/
     private final FrontController frontController;
     private final KeyMap keymap;
+    private boolean isEnabled;
 
     /******************** Constructor/Initializer ********************/
     public GlobalKeyListener(FrontController frontController){
@@ -30,15 +31,17 @@ public class GlobalKeyListener implements NativeKeyListener {
         if(!SettingsManager.getINSTANCE().getSettings().isShowKeyEventLogging()){
             disableNativeEventLogging();
         }
+
+        this.isEnabled = true;
     }
 
     /******************** Enable/Disable ********************/
     public void enable(){
-        GlobalScreen.addNativeKeyListener(this);
+        this.isEnabled = true;
     }
 
     public void disable(){
-        GlobalScreen.removeNativeKeyListener(this);
+        this.isEnabled = false;
     }
 
     private void disableNativeEventLogging() {
@@ -50,6 +53,10 @@ public class GlobalKeyListener implements NativeKeyListener {
     /******************** Handlers ********************/
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+        if(!isEnabled){
+            return;
+        }
+
         if(SettingsManager.getINSTANCE().getSettings().isModifyingSettings() || frontController.isPaused())   return;
 
         if(nativeKeyEvent.getKeyCode() == keymap.getStartKey()){
@@ -67,12 +74,6 @@ public class GlobalKeyListener implements NativeKeyListener {
         else if(nativeKeyEvent.getKeyCode() == keymap.getSkipKey()){
             Platform.runLater(frontController::skipSegmentHandler);
         }
-
-        //TODO find way to re-enable when not listening, disabled for now
-//        else if(nativeKeyEvent.getKeyCode() == keymap.getToggleGlobalHotkeysKey()){
-//            if(isGlobalHotkeysActive)   disable();
-//            else    enable();
-//        }
     }
 
     @Override

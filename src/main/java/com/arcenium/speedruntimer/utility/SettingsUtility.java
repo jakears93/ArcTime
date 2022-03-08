@@ -46,6 +46,8 @@ public class SettingsUtility {
             settings.setFontStyle((String) settingsMap.get("FontStyle"));
             settings.setWindowHeight((Integer) settingsMap.get("WindowHeight"));
             settings.setWindowWidth((Integer) settingsMap.get("WindowWidth"));
+            settings.setEditWindowHeight((Integer) settingsMap.get("EditWindowHeight"));
+            settings.setEditWindowWidth((Integer) settingsMap.get("EditWindowWidth"));
 
 
             System.out.println("Settings Loaded from File "+this.fileManager.getSettingsFile().getPath());
@@ -92,8 +94,10 @@ public class SettingsUtility {
         settings.setMainTimerFontSize(35);
         settings.setSplitTimerFontSize(25);
         settings.setFontStyle("Courier");
-        settings.setWindowHeight(600);
-        settings.setWindowWidth(250);
+        settings.setWindowHeight(300);
+        settings.setWindowWidth(440);
+        settings.setEditWindowHeight(425);
+        settings.setEditWindowWidth(600);
     }
 
     public void loadDefaultColours(){
@@ -118,6 +122,8 @@ public class SettingsUtility {
         settingsMap.put("FontStyle", settings.getFontStyle());
         settingsMap.put("WindowHeight" , settings.getWindowHeight());
         settingsMap.put("WindowWidth" , settings.getWindowWidth());
+        settingsMap.put("EditWindowHeight" , settings.getEditWindowHeight());
+        settingsMap.put("EditWindowWidth" , settings.getEditWindowWidth());
 
         try {
             ObjectMapper mapper = new ObjectMapper();
