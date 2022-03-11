@@ -3,12 +3,8 @@ package com.arcenium.speedruntimer.controller;
 import com.arcenium.speedruntimer.service.GlobalKeyListener;
 import com.arcenium.speedruntimer.service.RunService;
 import com.arcenium.speedruntimer.service.UiService;
-import com.arcenium.speedruntimer.utility.Converter;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 
 public class FrontController{
@@ -20,7 +16,7 @@ public class FrontController{
     /******************** Ui Components ********************/
     private Timeline updater;
     @FXML
-    private VBox vBox;
+    private VBox root;
 
     /******************** Constructors ********************/
     public FrontController(){
@@ -31,7 +27,7 @@ public class FrontController{
     /******************** Initializers ********************/
     @FXML
     public void initialize(){
-        this.uiService = new UiService(vBox, runService);
+        this.uiService = new UiService(root, runService);
         runService.initRun();
         uiService.initUi();
     }

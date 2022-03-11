@@ -1,7 +1,7 @@
 package com.arcenium.speedruntimer.service;
 
 import com.arcenium.speedruntimer.ArcTime;
-import com.arcenium.speedruntimer.config.Colours;
+import com.arcenium.speedruntimer.controller.EditSplitController;
 import com.arcenium.speedruntimer.model.ComparisonType;
 import com.arcenium.speedruntimer.model.GameInfo;
 import com.arcenium.speedruntimer.model.Split;
@@ -10,14 +10,12 @@ import com.arcenium.speedruntimer.utility.SettingsManager;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -200,7 +198,8 @@ public class UiService {
             }
             //Open up blank split template
             try{
-                Stage stage = initEditSplitStage();
+                Stage stage = initSplitEditor();
+                ((Label) stage.getScene().getRoot().getChildrenUnmodifiable().get(0)).setText("Edit Splits");
                 stage.show();
             }
             catch (IOException exception){
@@ -218,7 +217,8 @@ public class UiService {
             }
             //Open up blank split template
             try{
-                Stage stage = initEditSplitStage();
+                Stage stage = initSplitEditor();
+                ((Label) stage.getScene().getRoot().getChildrenUnmodifiable().get(0)).setText("New Splits");
                 stage.show();
             }
             catch (IOException exception){
@@ -284,8 +284,10 @@ public class UiService {
         });
     }
 
-    private Stage initEditSplitStage() throws IOException {
+    private Stage initSplitEditor() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ArcTime.class.getResource("edit-splits.fxml"));
+        EditSplitController editSplitController = new EditSplitController(runService.getGameInfo());
+        fxmlLoader.setController(editSplitController);
         Scene scene = new Scene(fxmlLoader.load(), SettingsManager.getINSTANCE().getSettings().getEditWindowWidth(), SettingsManager.getINSTANCE().getSettings().getEditWindowHeight());
         Stage stage = new Stage();
         stage.setScene(scene);

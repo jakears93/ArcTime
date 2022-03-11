@@ -38,7 +38,7 @@
 <?import javafx.scene.text.*?>
 
 
-<VBox fx:id="vBox" prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arcenium.speedruntimer.controller.FrontController">
+<VBox fx:id="root" prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arcenium.speedruntimer.controller.FrontController">
 <children>
       <GridPane fx:id="Run_Info_Grid" prefHeight="70.0">
         <columnConstraints>

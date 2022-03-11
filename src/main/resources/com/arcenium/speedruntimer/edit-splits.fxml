@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arcenium.speedruntimer.controller.EditSplitController">
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Edit Splits" textAlignment="CENTER">
          <font>
@@ -33,12 +33,12 @@
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <TextField fx:id="Game_Title_Editable" GridPane.columnIndex="1" />
-            <TextField fx:id="Run_Category_Editable" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Run Offset" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font></Label>
+            <TextField fx:id="Game_Title_Editable" GridPane.columnIndex="1" />
+            <TextField fx:id="Run_Category_Editable" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="Run_Offset_Editable" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
          <padding>
@@ -108,11 +108,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="Cancel_Button" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="3">
+            <Button fx:id="Save_GameInfo_Button" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Save" GridPane.columnIndex="1">
                <font>
                   <Font size="14.0" />
                </font></Button>
-            <Button fx:id="Save_GameInfo_Button" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Save" GridPane.columnIndex="1">
+            <Button fx:id="Cancel_Button" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="3">
                <font>
                   <Font size="14.0" />
                </font></Button>
